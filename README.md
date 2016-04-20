@@ -5,7 +5,7 @@ This repo trains or fine-tunes Deep Residual Network on ImageNet or your own dat
 
 ### Get Started
 
-* The code relies on [vlfeat](http://www.vlfeat.org/), and a modified version of [matconvnet](https://github.com/zhanghang1989/matconvnet-18), which should be downloaded and built before running the experiments. You can use the following commend to install them.
+* The code relies on [vlfeat](http://www.vlfeat.org/), and [a modified version of matconvnet](https://github.com/zhanghang1989/matconvnet-18), which should be downloaded and built before running the experiments. You can use the following commend to install them.
 
 * Download one of the following models to `data/models`, if you want to fine-tune a pre-trained RestNet      
     * [imagenet-resnet-50-dag](http://www.vlfeat.org/matconvnet/pretrained) 
