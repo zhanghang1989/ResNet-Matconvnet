@@ -4,8 +4,8 @@ function [net, info] = res_imagenet(n, varargin)
 
 setup;
 
-opts.datasetName = 'reflectance';
-opts.datafn = @setup_imdb_reflectance;
+opts.datasetName = 'ILSVRC2012';
+opts.datafn = @setup_imdb_imagenet;
 [opts,varargin] = vl_argparse(opts, varargin) ;
 
 opts.dataDir = fullfile('data',opts.datasetName) ;
