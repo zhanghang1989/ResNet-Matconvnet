@@ -12,7 +12,7 @@ This repo trains or fine-tunes Deep Residual Network on ImageNet or your own dat
     * [imagenet-resnet-101-dag](http://www.vlfeat.org/matconvnet/pretrained) 
     * [imagenet-resnet-152-dag](http://www.vlfeat.org/matconvnet/pretrained) 
 
-* Download the following material datasets to `data/`, if you want to train or fine-tune ResNet on them
+* Download the following material datasets to `data/`, if you want to fine-tune ResNet on them
     * Reflectance Disks [(reflectance)](https://goo.gl/6Kwg13)  
     * Flickr Material Database [(fmd)](http://people.csail.mit.edu/celiu/CVPR2010/FMD/) 
     * Describable Textures Dataset [(dtd)](http://www.robots.ox.ac.uk/~vgg/data/dtd)
