@@ -36,7 +36,7 @@ function imdb = setup_imdb_imagenet(varargin)
 %    sufficient RAM is available). Reading images off disk with a
 %    sufficient speed is crucial for fast training.
 
-opts.dataDir = fullfile('data','imagenet12') ;
+opts.dataDir = fullfile('data','ILSVRC2012') ;
 opts.lite = false ;
 opts = vl_argparse(opts, varargin) ;
 
