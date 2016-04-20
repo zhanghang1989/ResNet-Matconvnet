@@ -14,6 +14,8 @@ opts.whitenData = true;
 opts.contrastNormalization = true; 
 opts.border = [4 4 4 4];
 opts.gpus = [1];
+opts.datasetName = 'ILSVRC2012';
+opts.datafn = @setup_imdb_imagenet;
 
 opts = vl_argparse(opts, varargin); 
 
