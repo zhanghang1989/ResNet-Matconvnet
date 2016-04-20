@@ -1,4 +1,4 @@
-# ResNet-Matconvnet
+# ResNet-Matconvnet (Coming Soon Later Today)
 Created by Hang Zhang
 
 This repo trains or fine-tunes Deep Residual Network on ImageNet or your own dataset. ["Deep Residual Learning for Image Recognition",Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun](http://arxiv.org/abs/1512.03385). 
