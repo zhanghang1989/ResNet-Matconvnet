@@ -18,11 +18,11 @@ This repo trains or fine-tunes Deep Residual Network on ImageNet or your own dat
     * Describable Textures Dataset [(dtd)](http://www.robots.ox.ac.uk/~vgg/data/dtd)
     * Textures under varying Illumination [(kth)](http://www.nada.kth.se/cvap/databases/kth-tips/)
 
-### Train from Scratch 
+### Train from Scratch on ImageNet
 
 For training ResNet on CIFAR dataset, please refer to Hang Su's [GitHub](https://github.com/suhangpro/matresnet).
 
-### Fine-tune on ImageNet or Other Datasets
+### Fine-tune on Your Own Datasets
 
 ### Acknowldgements
 
