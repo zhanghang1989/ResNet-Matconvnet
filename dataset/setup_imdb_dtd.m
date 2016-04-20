@@ -1,4 +1,4 @@
-function imdb = dtd_get_database(dtdDir, varargin)
+function imdb = setup_imdb_dtd(dtdDir, varargin)
 opts.seed = 1 ;
 opts.joint = 0;
 opts = vl_argparse(opts, varargin) ;

@@ -1,4 +1,4 @@
-function imdb = fmd_get_database(fmdDir, varargin)
+function imdb = setup_imdb_fmd(fmdDir, varargin)
 opts.seed = 0 ;
 opts = vl_argparse(opts, varargin) ;
 
