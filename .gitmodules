@@ -1,6 +1,6 @@
-[submodule "dependencies/matconvnet-18"]
-	path = dependencies/matconvnet-18
-	url = https://github.com/zhanghang1989/matconvnet-18.git
 [submodule "dependencies/vlfeat"]
 	path = dependencies/vlfeat
 	url = https://github.com/vlfeat/vlfeat.git
+[submodule "dependencies/matconvnet"]
+	path = dependencies/matconvnet
+	url = https://github.com/zhanghang1989/matconvnet.git
