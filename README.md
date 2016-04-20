@@ -20,7 +20,7 @@ This repo trains or fine-tunes Deep Residual Network on ImageNet or your own dat
 
 ### Train from Scratch 
 
-For training resnet on CIFAR dataset, please refer to Hang Su's [GitHub](https://github.com/suhangpro/matresnet).
+For training ResNet on CIFAR dataset, please refer to Hang Su's [GitHub](https://github.com/suhangpro/matresnet).
 
 ### Fine-tune on ImageNet or Other Datasets
 
