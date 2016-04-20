@@ -26,7 +26,7 @@ else
 end
 
 expRoot = opts.expDir; 
-opts.checkpointFn = @() plot_results(expRoot, 'cifar');
+opts.checkpointFn = @() plot_results(expRoot, 'imagenet');
 
 for i=1:n_exp, 
   %opts.expDir = fullfile(expRoot, ...
