@@ -4,9 +4,10 @@ Created by [Hang Zhang](www.hangzh.com)
 This repo trains or fine-tunes Deep Residual Network on ImageNet or your own dataset. It is a Matconvnet implementation of ["Deep Residual Learning for Image Recognition",Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun](http://arxiv.org/abs/1512.03385). 
 
 ### Table of Contents
-0. [Get Started](#Get Started)
-0. [Train on ImageNet](#Train on ImageNet)
-0. [Fine-tune Your Own](#Fine-tune Your Own)
+0. [Get Started](#get-started)
+0. [Train on ImageNet](#train-on-imageNet)
+0. [Fine-tune Your Own](#fine-tune-your-own)
+0. [Acknowldgements](#acknowldgements)
 
 ### Get Started
 
