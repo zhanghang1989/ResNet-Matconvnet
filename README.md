@@ -22,7 +22,7 @@ The code relies on [vlfeat](http://www.vlfeat.org/), and [a modified version of 
 	
 	run_experiments([18 34 50 101 152], 'gpus', [1 2]);
 
-**3. On your own dataset:** 
+**3. Example on your own dataset:** 
 	
 	run_experiments([18 34 50 101],'datasetName',...
 	'reflectance', 'datafn', @setup_imdb_reflectance, 'gpus', [1 2]);
