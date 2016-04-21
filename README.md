@@ -11,8 +11,9 @@ This repo trains or fine-tunes Deep Residual Network on ImageNet or your own dat
 
 ### Get Started
 
-The code relies on [vlfeat](http://www.vlfeat.org/), and [a modified version of matconvnet](https://github.com/zhanghang1989/matconvnet), which should be downloaded and built before running the experiments. You can use the following commend to install them.
-
+The code relies on [vlfeat](http://www.vlfeat.org/), and [a modified version of matconvnet](https://github.com/zhanghang1989/matconvnet), which should be downloaded and built before running the experiments. You can use the following commend to download them.
+	
+	git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvnet.git
 
 ### Train on ImageNet
 **1. Download Imagenet2012 dataset** to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`
