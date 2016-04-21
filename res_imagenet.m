@@ -1,4 +1,5 @@
 function [net, info] = res_imagenet(n, varargin)
+%  res_imagenet(18,'gpus', [1 2])
 % res_imagenet(18, 'datasetName', 'reflectance', 'datafn',...
 %   @setup_imdb_reflectance, 'nClasses', 21, 'gpus', [1 2])
 
