@@ -39,7 +39,7 @@ for p = plots
       load(fullfile(tmpDir,sprintf('net-epoch-%d.mat',epoch)),'stats');
       plot([stats.train.(measures{k})], ':','Color',cmap(find(Ns==n),:),'LineWidth',1.5); 
       Hs(end+1) = plot([stats.val.(measures{k})], '-','Color',cmap(find(Ns==n),:),'LineWidth',1.5); 
-      leg{end+1} = sprintf('%s-%d',p,6*n+2);
+      leg{end+1} = sprintf('%s-%d',p,n);
       if numel(stats.train)>nEpoches, nEpoches = numel(stats.train); end
     end
     xlabel('epoch') ;
