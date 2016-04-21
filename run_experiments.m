@@ -7,7 +7,7 @@ function run_experiments(Ns, varargin)
 
 setup;
 
-opts.expDir = 'exp';
+opts.expDir = fullfile('data','exp') ;
 opts.bn = true;
 opts.meanType = 'image';
 opts.whitenData = true;
