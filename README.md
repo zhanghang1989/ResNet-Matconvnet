@@ -22,7 +22,7 @@ The code relies on [vlfeat](http://www.vlfeat.org/), and [a modified version of 
 
 For training ResNet on CIFAR dataset, please refer to Hang Su's [GitHub](https://github.com/suhangpro/matresnet).
 
-### Fine-tune on Your Own Datasets
+### Fine-tune on Your Own Datasets (Coming Soon)
 
 * Download one of the following models to `data/models`, if you want to fine-tune a pre-trained RestNet      
     * [imagenet-resnet-50-dag](http://www.vlfeat.org/matconvnet/pretrained) 
