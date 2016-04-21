@@ -8,7 +8,6 @@ function run_experiments(Ns, varargin)
 %   and more defined in cnn_cifar.m
 
 setup;
-
 opts.expDir = fullfile('data','exp') ;
 opts.bn = true;
 opts.meanType = 'image';
@@ -28,10 +27,10 @@ MTs = repmat(MTs, [1, n_exp]);
 
 
 expRoot = opts.expDir; 
-opts.checkpointFn = @() plot_results(expRoot, 'imagenet');
+opts.checkpointFn = @() plot_results(expRoot, opts.datasetName);
 
 for i=1:n_exp, 
   opts.expDir = fullfile(expRoot, ...
-    sprintf('imagenet-%s-%d', MTs{i}, Ns(i))); 
+    sprintf('%s-%s-%d', opts.datasetName, MTs{i}, Ns(i))); 
   [net,info] = res_imagenet(Ns(i), opts); 
 end
