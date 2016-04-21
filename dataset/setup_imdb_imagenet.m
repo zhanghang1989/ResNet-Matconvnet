@@ -38,7 +38,7 @@ function imdb = setup_imdb_imagenet(varargin)
 
 opts.dataDir = fullfile('data','ILSVRC2012') ;
 opts.lite = false ;
-opts = vl_argparse(opts, varargin) ;
+%opts = vl_argparse(opts, varargin) ;
 
 % -------------------------------------------------------------------------
 %                                                  Load categories metadata

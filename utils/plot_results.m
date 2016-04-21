@@ -18,7 +18,7 @@ if isempty(strfind(savePath,'.pdf')) || strfind(savePath,'.pdf')~=numel(savePath
   savePath = fullfile(savePath,[datasetName '-summary.pdf']);
 end
 
-plots = {'plain', 'resnet'}; 
+plots = {'resnet'}; 
 figure(1) ; clf ;
 cmap = lines;
 for p = plots
