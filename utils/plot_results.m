@@ -7,6 +7,7 @@ end
 if ~exist('measures', 'var') || isempty(measures), 
   if strcmpi(datasetName, 'cifar'), measures = {'error'}; 
   elseif strcmpi(datasetName, 'imagenet'), measures = {'error', 'error5'};
+  elseif strcmpi(datasetName, 'ILSVRC2012'), measures = {'error', 'error5'};
   end
 end
 if ~exist('savePath', 'var'), 
