@@ -25,7 +25,7 @@ The code relies on [vlfeat](http://www.vlfeat.org/), and [a modified version of 
 **3. Example on your own dataset:** 
 	
 	run_experiments([18 34 50 101],'datasetName',...
-	'reflectance', 'datafn', @setup_imdb_reflectance, 'gpus', [1 2]);
+	'yourdata', 'datafn', @setup_imdb_generic, 'gpus', [1 2]);
 
 For training ResNet on CIFAR dataset, please refer to Hang Su's [GitHub](https://github.com/suhangpro/matresnet).
 
