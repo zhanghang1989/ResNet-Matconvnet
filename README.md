@@ -19,7 +19,7 @@ The code relies on [vlfeat](http://www.vlfeat.org/), and [a modified version of 
 
 **2. Usage example:** 
 	
-	run_experiments([18 34 50 101 152], 'gpus', [1 2]);
+	run_experiments([18 34 50 101 152], 'gpus', [1 2 3 4 5 6 7 8]);
 
 **3. On your own dataset:** 
 	
