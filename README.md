@@ -14,7 +14,7 @@ The code relies on [vlfeat](http://www.vlfeat.org/), and [a modified version of 
 	
 	git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvnet.git
 
-### Train on ImageNet
+### Train from Scratch
 **1. Download Imagenet2012 dataset** to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`
 
 **2. Usage example:** 
