@@ -20,7 +20,7 @@ if isempty(strfind(savePath,'.pdf')) || strfind(savePath,'.pdf')~=numel(savePath
 end
 
 plots = {'resnet'}; 
-figure(1) ; clf ;
+figure(2) ; clf ;
 cmap = lines;
 for p = plots
   p = char(p) ;

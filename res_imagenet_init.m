@@ -40,13 +40,13 @@ end
 net.meta.trainOpts.numEpochs = numel(net.meta.trainOpts.learningRate) ;
 
 % First conv layer
-add_block_conv(net, '0000', 'image', [7 7 3 64], 2, opts.batchNormalization, true); 
+add_block_conv(net, '0', 'image', [7 7 3 64], 2, opts.batchNormalization, true); 
 block = dagnn.Pooling('poolSize', [3 3], 'method', 'max', 'pad', 1, 'stride', 2); 
-net.addLayer('pool0000', block, 'relu0000', 'pool0000'); 
+net.addLayer('pool0', block, 'relu0', 'pool0'); 
 
 info.lastNumChannel = 64;
 info.lastIdx = 0;
-info.lastName = 'pool0000'; 
+info.lastName = 'pool0'; 
 
 % Four groups of layers
 info = add_group(opts.networkType, net, Ns(1), info, 3, 64,  1, opts.bottleneck, opts.batchNormalization);
@@ -56,11 +56,11 @@ info = add_group(opts.networkType, net, Ns(4), info, 3, 512, 2, opts.bottleneck,
 
 % Prediction & loss layers
 block = dagnn.Pooling('poolSize', [7 7], 'method', 'avg', 'pad', 0, 'stride', 1);
-net.addLayer('pool_final', block, sprintf('relu%04d',info.lastIdx), 'pool_final');
+net.addLayer('pool_final', block, sprintf('relu%d',info.lastIdx), 'pool_final');
 
 block = dagnn.Conv('size', [1 1 info.lastNumChannel nClasses], 'hasBias', true, ...
                    'stride', 1, 'pad', 0);
-lName = sprintf('fc%04d', info.lastIdx+1);
+lName = sprintf('fc%d', info.lastIdx+1);
 net.addLayer(lName, block, 'pool_final', lName, {[lName '_f'], [lName '_b']});
 
 if opts.batchNormalization, % TODO confirm this is needed
@@ -85,7 +85,6 @@ net.meta.normalization.keepAspect = true ;
 net.meta.augmentation.rgbVariance = zeros(0,3) ;
 net.meta.augmentation.transformation = 'stretch' ;
 
-
 end
 
 % Add a group of layers containing 2n/3n conv layers
@@ -95,15 +94,15 @@ if strcmpi(netType, 'plain'),
     lName = info.lastName; 
     info = rmfield(info, 'lastName');
   else
-    lName = sprintf('relu%04d', info.lastIdx);
+    lName = sprintf('relu%d', info.lastIdx);
   end
   % the 1st layer in the group may downsample the activations by half
-  add_block_conv(net, sprintf('%04d', info.lastIdx+1), lName, ...
+  add_block_conv(net, sprintf('%d', info.lastIdx+1), lName, ...
     [w w info.lastNumChannel ch], stride, bn, true); 
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = ch;
   for i=2:2*n,
-    add_block_conv(net, sprintf('%04d', info.lastIdx+1), sprintf('relu%04d', info.lastIdx), ...
+    add_block_conv(net, sprintf('%d', info.lastIdx+1), sprintf('relu%d', info.lastIdx), ...
       [w w ch ch], 1, bn, true);
     info.lastIdx = info.lastIdx + 1;
   end
@@ -121,31 +120,31 @@ if isfield(info, 'lastName'),
   lName0 = info.lastName;
   info = rmfield(info, 'lastName'); 
 else
-  lName0 = sprintf('relu%04d',info.lastIdx); 
+  lName0 = sprintf('relu%d',info.lastIdx); 
 end
 if bottleneck, 
-  add_block_conv(net, sprintf('%04d',info.lastIdx+1), lName0, [1 1 f_size(3) f_size(4)], stride, bn, true); 
+  add_block_conv(net, sprintf('%d',info.lastIdx+1), lName0, [1 1 f_size(3) f_size(4)], stride, bn, true); 
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = f_size(4);
-  add_block_conv(net, sprintf('%04d',info.lastIdx+1), sprintf('relu%04d',info.lastIdx), ...
+  add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
     [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, bn, true); 
   info.lastIdx = info.lastIdx + 1;
-  add_block_conv(net, sprintf('%04d',info.lastIdx+1), sprintf('relu%04d',info.lastIdx), ...
+  add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
     [1 1 info.lastNumChannel info.lastNumChannel*4], 1, bn, false); 
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = info.lastNumChannel*4; 
 else
-  add_block_conv(net, sprintf('%04d',info.lastIdx+1), lName0, f_size, stride, bn, true); 
+  add_block_conv(net, sprintf('%d',info.lastIdx+1), lName0, f_size, stride, bn, true); 
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = f_size(4);
-  add_block_conv(net, sprintf('%04d',info.lastIdx+1), sprintf('relu%04d',info.lastIdx), ...
+  add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
     [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, bn, false); 
   info.lastIdx = info.lastIdx + 1;
 end
 if bn, 
-  lName1 = sprintf('bn%04d', info.lastIdx);
+  lName1 = sprintf('bn%d', info.lastIdx);
 else
-  lName1 = sprintf('conv%04d', info.lastIdx);
+  lName1 = sprintf('conv%d', info.lastIdx);
 end
 if stride>1, 
   block = dagnn.Conv('size',[1 1 f_size(3) f_size(3)], 'hasBias',false,'stride',stride, ...
@@ -157,15 +156,15 @@ if stride>1,
   net.params(pidx).learningRate = 0;
 end
 if f_size(3)==info.lastNumChannel, 
-  net.addLayer(sprintf('sum%04d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
-    sprintf('sum%04d',info.lastIdx));
+  net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
+    sprintf('sum%d',info.lastIdx));
 else
-  net.addLayer(sprintf('sum%04d',info.lastIdx), dagnn.PadSum(), {lName0,lName1}, ...
-    sprintf('sum%04d',info.lastIdx));
+  net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.PadSum(), {lName0,lName1}, ...
+    sprintf('sum%d',info.lastIdx));
 end
 block = dagnn.ReLU('leak', 0); 
-net.addLayer(sprintf('relu%04d', info.lastIdx), block, sprintf('sum%04d', info.lastIdx), ...
-  sprintf('relu%04d', info.lastIdx)); 
+net.addLayer(sprintf('relu%d', info.lastIdx), block, sprintf('sum%d', info.lastIdx), ...
+  sprintf('relu%d', info.lastIdx)); 
 end
 
 % Add a conv layer (followed by optional batch normalization & relu) 
