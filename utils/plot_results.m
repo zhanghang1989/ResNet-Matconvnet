@@ -7,7 +7,7 @@ end
 if ~exist('measures', 'var') || isempty(measures), 
   if strcmpi(datasetName, 'cifar'), measures = {'error'}; 
   elseif strcmpi(datasetName, 'imagenet'), measures = {'error', 'error5'};
-  elseif strcmpi(datasetName, 'ILSVRC2012'), measures = {'error', 'error5'};
+  else measures = {'error', 'error5'};
   end
 end
 if ~exist('savePath', 'var'), 
@@ -16,7 +16,7 @@ end
 
 if ischar(measures), measures = {measures}; end
 if isempty(strfind(savePath,'.pdf')) || strfind(savePath,'.pdf')~=numel(savePath)-3, 
-  savePath = fullfile(savePath,[datasetName '-summary.pdf']);
+  savePath = fullfile(savePath,[datasetName '-Gsummary.pdf']);
 end
 
 plots = {'resnet'}; 
@@ -30,7 +30,8 @@ for p = plots
   Ns = sort(Ns); 
 
   for k = 1:numel(measures), 
-    subplot(k,numel(plots),find(strcmp(p,plots)));
+    subplot(numel(plots),numel(measures),...
+        k + numel(measures)*(find(strcmp(p,plots))-1));
     hold on;
     leg = {}; Hs = []; nEpoches = 0;
     for n=Ns,
@@ -48,14 +49,14 @@ for p = plots
     title(p) ;
     legend(Hs,leg{:},'Location','NorthEast') ;
 %    axis square; 
-%    ylim([0 .25]);
-    ylim([0 .75]);
+    ylim([0 .5]);
+%    ylim([0 .75]);
     %xlim([0 nEpoches]);
     set(gca,'YGrid','on');
   end
 end
 drawnow ;
-print(1, savePath, '-dpdf') ;
+print(savePath, '-dpdf') ;
 end
 
 function epoch = findLastCheckpoint(modelDir)
