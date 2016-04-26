@@ -63,10 +63,10 @@ block = dagnn.Conv('size', [1 1 info.lastNumChannel nClasses], 'hasBias', true, 
 lName = sprintf('fc%d', info.lastIdx+1);
 net.addLayer(lName, block, 'pool_final', lName, {[lName '_f'], [lName '_b']});
 
-if opts.batchNormalization, % TODO confirm this is needed
-  add_layer_bn(net, nClasses, lName, strrep(lName,'fc','bn'), 0.1); 
-  lName = strrep(lName, 'fc', 'bn'); 
-end
+% if opts.batchNormalization, % TODO confirm this is needed
+%   add_layer_bn(net, nClasses, lName, strrep(lName,'fc','bn'), 0.1); 
+%   lName = strrep(lName, 'fc', 'bn'); 
+% end
 
 net.addLayer('softmax', dagnn.SoftMax(), lName, 'softmax');  
 net.addLayer('loss', dagnn.Loss('loss', 'log'), {'softmax', 'label'}, 'loss');
@@ -123,6 +123,7 @@ else
   lName0 = sprintf('relu%d',info.lastIdx); 
 end
 if bottleneck, 
+  % update this part, if stride == 2, add 1x1 conv & BN
   add_block_conv(net, sprintf('%d',info.lastIdx+1), lName0, [1 1 f_size(3) f_size(4)], stride, bn, true); 
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = f_size(4);
@@ -155,6 +156,7 @@ if stride>1,
   pidx = net.getParamIndex([lName0 '_f']);
   net.params(pidx).learningRate = 0;
 end
+% sum layer
 if f_size(3)==info.lastNumChannel, 
   net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
     sprintf('sum%d',info.lastIdx));
@@ -162,6 +164,7 @@ else
   net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.PadSum(), {lName0,lName1}, ...
     sprintf('sum%d',info.lastIdx));
 end
+% relu
 block = dagnn.ReLU('leak', 0); 
 net.addLayer(sprintf('relu%d', info.lastIdx), block, sprintf('sum%d', info.lastIdx), ...
   sprintf('relu%d', info.lastIdx)); 
@@ -169,13 +172,14 @@ end
 
 % Add a conv layer (followed by optional batch normalization & relu) 
 function net = add_block_conv(net, out_suffix, in_name, f_size, stride, bn, relu)
-block = dagnn.Conv('size',f_size, 'hasBias',true, 'stride', stride, ...
+block = dagnn.Conv('size',f_size, 'hasBias',false, 'stride', stride, ...
                    'pad',[ceil(f_size(1)/2-0.5) floor(f_size(1)/2-0.5) ...
-                   ceil(f_size(2)/2-0.5) floor(f_size(2)/2-0.5)]);
+                   %ceil(f_size(2)/2-0.5) floor(f_size(2)/2-0.5)
+                   ]);
 lName = ['conv' out_suffix];
-net.addLayer(lName, block, in_name, lName, {[lName '_f'],[lName '_b']});
-pidx = net.getParamIndex([lName '_b']);
-net.params(pidx).weightDecay = 0;
+net.addLayer(lName, block, in_name, lName, {[lName '_f']});%,[lName '_b']
+%pidx = net.getParamIndex([lName '_b']);
+%net.params(pidx).weightDecay = 0;
 if bn, 
   add_layer_bn(net, f_size(4), lName, strrep(lName,'conv','bn'), 0.1); 
   lName = strrep(lName, 'conv', 'bn');
