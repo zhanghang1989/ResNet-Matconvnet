@@ -41,7 +41,7 @@ net.meta.trainOpts.numEpochs = numel(net.meta.trainOpts.learningRate) ;
 
 % First conv layer
 add_block_conv(net, '0', 'image', [7 7 3 64], 2, opts.batchNormalization, true); 
-block = dagnn.Pooling('poolSize', [3 3], 'method', 'max', 'pad', 1, 'stride', 2); 
+block = dagnn.Pooling('poolSize', [3 3], 'method', 'max', 'pad', [0 1 0 1], 'stride', 2); 
 net.addLayer('pool0', block, 'relu0', 'pool0'); 
 
 info.lastNumChannel = 64;
@@ -122,9 +122,26 @@ if isfield(info, 'lastName'),
 else
   lName0 = sprintf('relu%d',info.lastIdx); 
 end
+lName01 = lName0;
+
+if stride>1, 
+   % TODO: add bn layer here
+  block = dagnn.Conv('size',[1 1 f_size(3) f_size(3)], 'hasBias',false,'stride',stride, ...
+    'pad', 0, 'initMethod', 'gaussian');
+  lName_tmp = lName0;
+  lName0 = [lName_tmp '_down2'];
+  net.addLayer(lName0, block, lName_tmp, lName0, [lName0 '_f']);
+  
+  %pidx = net.getParamIndex([lName0 '_f']);
+  %net.params(pidx).learningRate = 0;
+  
+  add_layer_bn(net, f_size(3), lName0, [lName01 '_d2bn'], 0.1); 
+  lName0 = [lName01 '_d2bn'];
+  
+end
+
 if bottleneck, 
-  % update this part, if stride == 2, add 1x1 conv & BN
-  add_block_conv(net, sprintf('%d',info.lastIdx+1), lName0, [1 1 f_size(3) f_size(4)], stride, bn, true); 
+  add_block_conv(net, sprintf('%d',info.lastIdx+1), lName01, [1 1 f_size(3) f_size(4)], stride, bn, true); 
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = f_size(4);
   add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
@@ -135,7 +152,7 @@ if bottleneck,
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = info.lastNumChannel*4; 
 else
-  add_block_conv(net, sprintf('%d',info.lastIdx+1), lName0, f_size, stride, bn, true); 
+  add_block_conv(net, sprintf('%d',info.lastIdx+1), lName01, f_size, stride, bn, true); 
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = f_size(4);
   add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
@@ -147,16 +164,9 @@ if bn,
 else
   lName1 = sprintf('conv%d', info.lastIdx);
 end
-if stride>1, 
-  block = dagnn.Conv('size',[1 1 f_size(3) f_size(3)], 'hasBias',false,'stride',stride, ...
-    'pad', 0, 'initMethod', 'one');
-  lName_tmp = lName0;
-  lName0 = [lName_tmp '_down2'];
-  net.addLayer(lName0, block, lName_tmp, lName0, [lName0 '_f']);
-  pidx = net.getParamIndex([lName0 '_f']);
-  net.params(pidx).learningRate = 0;
-end
-% sum layer
+
+
+% ToDo: update sum layer
 if f_size(3)==info.lastNumChannel, 
   net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
     sprintf('sum%d',info.lastIdx));
@@ -164,6 +174,7 @@ else
   net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.PadSum(), {lName0,lName1}, ...
     sprintf('sum%d',info.lastIdx));
 end
+
 % relu
 block = dagnn.ReLU('leak', 0); 
 net.addLayer(sprintf('relu%d', info.lastIdx), block, sprintf('sum%d', info.lastIdx), ...
@@ -178,6 +189,7 @@ block = dagnn.Conv('size',f_size, 'hasBias',false, 'stride', stride, ...
                    ]);
 lName = ['conv' out_suffix];
 net.addLayer(lName, block, in_name, lName, {[lName '_f']});%,[lName '_b']
+% removed the bias
 %pidx = net.getParamIndex([lName '_b']);
 %net.params(pidx).weightDecay = 0;
 if bn, 
