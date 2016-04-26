@@ -4,7 +4,7 @@ This repo trains or fine-tunes Deep Residual Network on ImageNet or your own dat
 
 ### Table of Contents
 0. [Get Started](#get-started)
-0. [Train on ImageNet](#train-on-imagenet)
+0. [Train from Scratch](#train-from-Scratch)
 0. [Fine-tune Your Own](#fine-tune-your-own)
 
 ### Get Started
