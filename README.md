@@ -40,6 +40,7 @@ For training ResNet on CIFAR dataset, please refer to Hang Su's [GitHub](https:/
   * Flickr Material Database [(fmd)](http://people.csail.mit.edu/celiu/CVPR2010/FMD/) 
   * Describable Textures Dataset [(dtd)](http://www.robots.ox.ac.uk/~vgg/data/dtd)
   * Textures under varying Illumination [(kth)](http://www.nada.kth.se/cvap/databases/kth-tips/)
+  * Material in Context Database [(minc)](http://opensurfaces.cs.cornell.edu/publications/minc/)
 
 ### Acknowldgements
 
