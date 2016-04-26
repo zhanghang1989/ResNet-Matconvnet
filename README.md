@@ -36,7 +36,7 @@ For training ResNet on CIFAR dataset, please refer to Hang Su's [GitHub](https:/
   * [imagenet-resnet-152-dag](http://www.vlfeat.org/matconvnet/pretrained) 
 
 **2. Download the datasets** to `data/`, if you want to fine-tune ResNet on them
-  * Reflectance Disks [(reflectance)](https://goo.gl/6Kwg13)  
+  * Reflectance Disks [(reflectance)](http://hangzh.com/Software.html)  
   * Flickr Material Database [(fmd)](http://people.csail.mit.edu/celiu/CVPR2010/FMD/) 
   * Describable Textures Dataset [(dtd)](http://www.robots.ox.ac.uk/~vgg/data/dtd)
   * Textures under varying Illumination [(kth)](http://www.nada.kth.se/cvap/databases/kth-tips/)
