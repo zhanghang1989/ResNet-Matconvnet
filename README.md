@@ -6,7 +6,6 @@ This repo trains or fine-tunes Deep Residual Network on ImageNet or your own dat
 0. [Get Started](#get-started)
 0. [Train on ImageNet](#train-on-imagenet)
 0. [Fine-tune Your Own](#fine-tune-your-own)
-0. [Acknowldgements](#acknowldgements)
 
 ### Get Started
 
