@@ -41,7 +41,3 @@ For training ResNet on CIFAR dataset, please refer to Hang Su's [GitHub](https:/
   * Describable Textures Dataset [(dtd)](http://www.robots.ox.ac.uk/~vgg/data/dtd)
   * Textures under varying Illumination [(kth)](http://www.nada.kth.se/cvap/databases/kth-tips/)
   * Material in Context Database [(minc)](http://opensurfaces.cs.cornell.edu/publications/minc/)
-
-### Acknowldgements
-
-We thank [vlfeat](http://www.vlfeat.org/) and [matconvnet](http://www.vlfeat.org/matconvnet) teams for creating and maintaining these excellent packages. Thank Hang Su for [MatConvNet Implementation of ResNet](https://github.com/suhangpro/matresnet).
