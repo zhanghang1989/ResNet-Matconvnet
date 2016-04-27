@@ -33,11 +33,15 @@ run_experiments([18 34 50 101],'datasetName',...
   - [imagenet-resnet-152-dag](http://www.vlfeat.org/matconvnet/pretrained) 
 
 2. **Download the datasets** to `data/`, if you want to fine-tune ResNet on them
-  * Reflectance Disks [(reflectance)](http://hangzh.com/Software.html)  
-  * Flickr Material Database [(fmd)](http://people.csail.mit.edu/celiu/CVPR2010/FMD/) 
-  * Describable Textures Dataset [(dtd)](http://www.robots.ox.ac.uk/~vgg/data/dtd)
-  * Textures under varying Illumination [(kth)](http://www.nada.kth.se/cvap/databases/kth-tips/)
-  * Material in Context Database [(minc)](http://opensurfaces.cs.cornell.edu/publications/minc/)
+  - Reflectance Disks [(reflectance)](http://hangzh.com/Software.html)  
+  - Flickr Material Database [(fmd)](http://people.csail.mit.edu/celiu/CVPR2010/FMD/) 
+  - Describable Textures Dataset [(dtd)](http://www.robots.ox.ac.uk/~vgg/data/dtd)
+  - Textures under varying Illumination [(kth)](http://www.nada.kth.se/cvap/databases/kth-tips/)
+  - Material in Context Database [(minc)](http://opensurfaces.cs.cornell.edu/publications/minc/)
 
 ### Changes
- Hang Su's [GitHub](https://github.com/suhangpro/matresnet).
+0. The code benefits from Hang Su's [GitHub](https://github.com/suhangpro/matresnet), the copyright of original code reserves.
+We added support for ImageNet experiments and our models are compatitible with [Matconvnet converted models](http://www.vlfeat.org/matconvnet/pretrained). 
+We added support for fine-tuning the pre-trained/converted model. 
+we added batch normailization layer to the shortcuts between different dimensions, please see our analysis for detail. 
+
