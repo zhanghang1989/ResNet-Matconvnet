@@ -1,5 +1,7 @@
-function plot_results(expDir, datasetName, measures, savePath)
+function plot_results(expDir, datasetName, measures, savePath, varargin)
 % Usage example: plot_results('exp', 'cifar', {'error'}, 'exp/summary.pdf');
+opts.plots = {'resnet'};
+opts = vl_argparse(opts, varargin); 
 
 if ~exist('datasetName', 'var') || isempty(datasetName), 
   datasetName = 'cifar';
@@ -19,7 +21,7 @@ if isempty(strfind(savePath,'.pdf')) || strfind(savePath,'.pdf')~=numel(savePath
   savePath = fullfile(savePath,[datasetName '-Gsummary.pdf']);
 end
 
-plots = {'resnet'}; 
+plots = opts.plots; 
 figure(2) ; clf ;
 cmap = lines;
 for p = plots
