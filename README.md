@@ -15,10 +15,12 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 ```
 	
 ### Train from Scratch
+
 1. **Imagenet2012.** download the dataset to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`.
 ```matlab
 run_experiments([18 34 50 101 152], 'gpus', [1 2 3 4 5 6 7 8]);
 ```
+
 2. **Your own dataset.** 
 ```matlab
 run_experiments([18 34 50 101],'datasetName',...
