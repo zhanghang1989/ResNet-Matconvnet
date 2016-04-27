@@ -41,7 +41,9 @@ run_experiments([18 34 50 101],'datasetName',...
 
 ### Changes
 0. The code benefits from Hang Su's [GitHub](https://github.com/suhangpro/matresnet), the copyright of original code reserves.
-We added support for ImageNet experiments and our models are compatitible with [Matconvnet converted models](http://www.vlfeat.org/matconvnet/pretrained). 
-We added support for fine-tuning the pre-trained/converted model. 
-we added batch normailization layer to the shortcuts between different dimensions, please see our analysis for detail. 
+We added:
+	- support for ImageNet experiments
+	- our models are compatitible with [Matconvnet converted models](http://www.vlfeat.org/matconvnet/pretrained). 
+	- support for fine-tuning the pre-trained/converted model. 
+	- batch normailization layer to the shortcuts between different dimensions, please see our analysis for detail. 
 
