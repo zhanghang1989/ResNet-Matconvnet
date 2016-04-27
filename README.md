@@ -14,13 +14,11 @@ The code relies on [vlfeat](http://www.vlfeat.org/), and [a modified version of 
 	git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvnet.git
 
 ### Train from Scratch
-**1. Download Imagenet2012 dataset** to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`
-
-**2. Usage example:** 
+**1. Imagenet2012** download the dataset to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`.
 	
 	run_experiments([18 34 50 101 152], 'gpus', [1 2 3 4 5 6 7 8]);
 
-**3. On your own dataset:** 
+**2. Your own dataset:** 
 	
 	run_experiments([18 34 50 101],'datasetName',...
 	'yourdata', 'datafn', @setup_imdb_generic, 'gpus', [1 2]);
