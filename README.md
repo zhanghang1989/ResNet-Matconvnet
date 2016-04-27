@@ -15,27 +15,29 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 ```
 	
 ### Train from Scratch
-**1. Imagenet2012.** download the dataset to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`.
+1. **Imagenet2012.** download the dataset to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`.
 ```matlab
 run_experiments([18 34 50 101 152], 'gpus', [1 2 3 4 5 6 7 8]);
 ```
-**2. Your own dataset.** 
+2. **Your own dataset.** 
 ```matlab
 run_experiments([18 34 50 101],'datasetName',...
 'yourdata', 'datafn', @setup_imdb_generic, 'gpus', [1 2]);
 ```
-For training ResNet on CIFAR dataset, please refer to Hang Su's [GitHub](https://github.com/suhangpro/matresnet).
 
 ### Fine-tune Your Own (Coming Soon)
 
-**1. Download the models** to `data/models`, if you want to fine-tune a pre-trained RestNet      
-  * [imagenet-resnet-50-dag](http://www.vlfeat.org/matconvnet/pretrained) 
-  * [imagenet-resnet-101-dag](http://www.vlfeat.org/matconvnet/pretrained) 
-  * [imagenet-resnet-152-dag](http://www.vlfeat.org/matconvnet/pretrained) 
+1. **Download the models** to `data/models`, if you want to fine-tune a pre-trained RestNet      
+  - [imagenet-resnet-50-dag](http://www.vlfeat.org/matconvnet/pretrained) 
+  - [imagenet-resnet-101-dag](http://www.vlfeat.org/matconvnet/pretrained) 
+  - [imagenet-resnet-152-dag](http://www.vlfeat.org/matconvnet/pretrained) 
 
-**2. Download the datasets** to `data/`, if you want to fine-tune ResNet on them
+2. **Download the datasets** to `data/`, if you want to fine-tune ResNet on them
   * Reflectance Disks [(reflectance)](http://hangzh.com/Software.html)  
   * Flickr Material Database [(fmd)](http://people.csail.mit.edu/celiu/CVPR2010/FMD/) 
   * Describable Textures Dataset [(dtd)](http://www.robots.ox.ac.uk/~vgg/data/dtd)
   * Textures under varying Illumination [(kth)](http://www.nada.kth.se/cvap/databases/kth-tips/)
   * Material in Context Database [(minc)](http://opensurfaces.cs.cornell.edu/publications/minc/)
+
+### Changes
+ Hang Su's [GitHub](https://github.com/suhangpro/matresnet).
