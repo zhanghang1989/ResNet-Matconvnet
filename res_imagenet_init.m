@@ -71,7 +71,7 @@ block = dagnn.Conv('size', [1 1 info.lastNumChannel nClasses], 'hasBias', true, 
 lName = sprintf('fc%d', info.lastIdx+1);
 net.addLayer(lName, block, 'pool_final', lName, {[lName '_f'], [lName '_b']});
 
-% if opts.batchNormalization, % TODO confirm this is needed
+% if opts.batchNormalization,
 %   add_layer_bn(net, nClasses, lName, strrep(lName,'fc','bn'), 0.1); 
 %   lName = strrep(lName, 'fc', 'bn'); 
 % end
@@ -98,6 +98,7 @@ end
 % Add a group of layers containing 2n/3n conv layers
 function info = add_group(netType, net, n, info, w, ch, stride, bottleneck, bn)
 if strcmpi(netType, 'plain'), 
+   % TODO: update 'plain', add bn
   if isfield(info, 'lastName'), 
     lName = info.lastName; 
     info = rmfield(info, 'lastName');
@@ -134,13 +135,13 @@ lName01 = lName0;
 
 if stride>1 || isFirst, 
   block = dagnn.Conv('size',[1 1 f_size(3) f_size(3)], 'hasBias',false,'stride',stride, ...
-    'pad', 0, 'initMethod', 'gaussian');
+    'pad', 0, 'initMethod', 'one');
   lName_tmp = lName0;
   lName0 = [lName_tmp '_down2'];
   net.addLayer(lName0, block, lName_tmp, lName0, [lName0 '_f']);
   
-  %pidx = net.getParamIndex([lName0 '_f']);
-  %net.params(pidx).learningRate = 0;
+  pidx = net.getParamIndex([lName0 '_f']);
+  net.params(pidx).learningRate = 0;
   
   add_layer_bn(net, f_size(3), lName0, [lName01 '_d2bn'], 0.1); 
   lName0 = [lName01 '_d2bn'];
