@@ -180,3 +180,4 @@ rgbm1 = mean(cat(2,rgbm1{:}),2) ;
 rgbm2 = mean(cat(3,rgbm2{:}),3) ;
 rgbMean = rgbm1 ;
 rgbCovariance = rgbm2 - rgbm1*rgbm1' ;
+
