@@ -18,7 +18,7 @@ The code relies on [vlfeat](http://www.vlfeat.org/), and [a modified version of 
 	
 	run_experiments([18 34 50 101 152], 'gpus', [1 2 3 4 5 6 7 8]);
 
-**. Your own dataset.** 
+**2. Your own dataset.** 
 	
 	run_experiments([18 34 50 101],'datasetName',...
 	'yourdata', 'datafn', @setup_imdb_generic, 'gpus', [1 2]);
