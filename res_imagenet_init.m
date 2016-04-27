@@ -40,7 +40,15 @@ end
 net.meta.trainOpts.numEpochs = numel(net.meta.trainOpts.learningRate) ;
 
 % First conv layer
-add_block_conv(net, '0', 'image', [7 7 3 64], 2, opts.batchNormalization, true); 
+block = dagnn.Conv('size',  [7 7 3 64], 'hasBias', true, ...
+                   'stride', 2, 'pad', [3 3 3 3]);
+lName = 'conv0';
+net.addLayer(lName, block, 'image', lName, {[lName '_f'], [lName '_b']});
+add_layer_bn(net, 64, lName, 'bn0', 0.1); 
+block = dagnn.ReLU('leak',0);
+net.addLayer('relu0',  block, 'bn0', 'relu0');
+
+%add_block_conv(net, '0', 'image', [7 7 3 64], 2, opts.batchNormalization, true); 
 block = dagnn.Pooling('poolSize', [3 3], 'method', 'max', 'pad', [0 1 0 1], 'stride', 2); 
 net.addLayer('pool0', block, 'relu0', 'pool0'); 
 
@@ -107,15 +115,15 @@ if strcmpi(netType, 'plain'),
     info.lastIdx = info.lastIdx + 1;
   end
 elseif strcmpi(netType, 'resnet'), 
-  info = add_block_res(net, info, [w w info.lastNumChannel ch], stride, bottleneck, bn); 
+  info = add_block_res(net, info, [w w info.lastNumChannel ch], stride, bottleneck, bn, 1); 
   for i=2:n, 
-    info = add_block_res(net, info, [w w ch ch], 1, bottleneck, bn); 
+    info = add_block_res(net, info, [w w ch ch], 1, bottleneck, bn, 0); 
   end
 end
 end
 
 % Add a smallest residual unit (2/3 conv layers)
-function info = add_block_res(net, info, f_size, stride, bottleneck, bn)
+function info = add_block_res(net, info, f_size, stride, bottleneck, bn, isFirst)
 if isfield(info, 'lastName'), 
   lName0 = info.lastName;
   info = rmfield(info, 'lastName'); 
@@ -124,8 +132,7 @@ else
 end
 lName01 = lName0;
 
-if stride>1, 
-   % TODO: add bn layer here
+if stride>1 || isFirst, 
   block = dagnn.Conv('size',[1 1 f_size(3) f_size(3)], 'hasBias',false,'stride',stride, ...
     'pad', 0, 'initMethod', 'gaussian');
   lName_tmp = lName0;
@@ -137,7 +144,6 @@ if stride>1,
   
   add_layer_bn(net, f_size(3), lName0, [lName01 '_d2bn'], 0.1); 
   lName0 = [lName01 '_d2bn'];
-  
 end
 
 if bottleneck, 
