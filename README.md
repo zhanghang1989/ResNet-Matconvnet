@@ -34,7 +34,7 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 , [imagenet-resnet-101-dag](http://www.vlfeat.org/matconvnet/pretrained) 
 , [imagenet-resnet-152-dag](http://www.vlfeat.org/matconvnet/pretrained) 
 	- the datasets to `data/` : Material in Context Database [(minc)](http://opensurfaces.cs.cornell.edu/publications/minc/)
-0. **Fine-tuning**
+0. **Fine-tuning.**
 	```matlab
 	res_finetune('datasetName', 'minc', 'datafn',...
 	@setup_imdb_minc, 'gpus',[1 2]);
