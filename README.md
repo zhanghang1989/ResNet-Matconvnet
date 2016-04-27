@@ -42,7 +42,7 @@ run_experiments([18 34 50 101],'datasetName',...
   - Material in Context Database [(minc)](http://opensurfaces.cs.cornell.edu/publications/minc/)
 
 ### Changes
-0. 04/27/2016: The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet), the copyright of original code reserves.
+0. 04/27/2016: The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet).
 We added:
 	- support for ImageNet experiments and fine-tuning the pre-trained/converted models
 	- our models are compatitible with [Matconvnet converted models](http://www.vlfeat.org/matconvnet/pretrained). 
