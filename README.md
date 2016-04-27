@@ -39,6 +39,7 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 	res_finetune('datasetName', 'minc', 'datafn',...
 	@setup_imdb_minc, 'gpus',[1 2]);
 	```
+
 ### Changes
 0. 04/27/2016: The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet).
 We added:
