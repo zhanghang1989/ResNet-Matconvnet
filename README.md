@@ -44,6 +44,6 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 ### Changes
 0. 04/27/2016: The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet). This re-implementation contains:
 	- support for ImageNet experiments and fine-tuning the pre-trained/converted models
-	- our models are compatitible with Matconvnet [converted models](http://www.vlfeat.org/matconvnet/pretrained). 
-	- batch normailization layer is added to the shortcuts between different dimensions (see analysis).
+	- the models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
+	- batch normailization layers are added to the shortcuts between different dimensions (see analysis).
 
