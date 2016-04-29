@@ -18,7 +18,7 @@ function imdb = setup_imdb_imagenet(varargin)
 %    In order to use the ILSVRC data with these scripts, please
 %    unpack it as follows. Create a root folder <DATA>, by default
 %
-%    data/imagenet12
+%    data/ILSVRC2012
 %
 %    (note that this can be a simlink). Use the 'dataDir' option to
 %    specify a different path.
