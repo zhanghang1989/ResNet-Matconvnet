@@ -27,7 +27,7 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 	'yourdata', 'datafn', @setup_imdb_generic, 'gpus', [1 2]);
 	```
 
-### Fine-tune Your Own (Coming Soon)
+### Fine-tune Your Own
 
 0. **Download** 
 	- the models to `data/models` : [imagenet-resnet-50-dag](http://www.vlfeat.org/matconvnet/pretrained) 
