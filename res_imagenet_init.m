@@ -172,14 +172,9 @@ else
 end
 
 
-% ToDo: update sum layer
-if 1% f_size(3)==info.lastNumChannel, 
-  net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
-    sprintf('sum%d',info.lastIdx));
-else
-  net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.PadSum(), {lName0,lName1}, ...
-    sprintf('sum%d',info.lastIdx));
-end
+net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
+sprintf('sum%d',info.lastIdx));
+
 
 % relu
 block = dagnn.ReLU('leak', 0); 
