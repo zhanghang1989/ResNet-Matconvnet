@@ -9,7 +9,7 @@ This repository is a Matconvnet re-implementation of ["Deep Residual Learning fo
 
 ### Get Started
 
-The code relies on [vlfeat](http://www.vlfeat.org/), and [a modified version of matconvnet](https://github.com/zhanghang1989/matconvnet), which should be downloaded and built before running the experiments. You can use the following commend to download them.
+The code relies on [vlfeat](http://www.vlfeat.org/), and [matconvnet](http://www.vlfeat.org/matconvnet/), which should be downloaded and built before running the experiments. You can use the following commend to download them.
 ```sh
 git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvnet.git
 ```
@@ -42,9 +42,11 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 	```
 
 ### Changes
-0. 05/02/2016: Added support for fine-tuning Pre-trained model.
+0. 05/02/2016: 
+	- Added support official Matconvnet version.
+	- Added support for fine-tuning Pre-trained model.
 
 0. 04/27/2016: The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet). This re-implementation:
-	- added support for ImageNet experiments
-	- fixed bugs, and the models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
+	- Added support for ImageNet experiments
+	- Fixed bugs, and the models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
 
