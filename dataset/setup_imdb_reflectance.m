@@ -1,6 +1,7 @@
 function [imdb] = setup_imdb_reflectance( datasetDir, varargin )
 %
 opts.seed = 1 ;
+opts.datasetName = '';
 opts = vl_argparse(opts, varargin) ;
 
 rng(opts.seed) ;

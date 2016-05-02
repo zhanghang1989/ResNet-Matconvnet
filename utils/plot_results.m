@@ -51,7 +51,7 @@ for p = plots
     title(p) ;
     legend(Hs,leg{:},'Location','NorthEast') ;
 %    axis square; 
-    ylim([0 .5]);
+    ylim([0 .2]);
 %    ylim([0 .75]);
     %xlim([0 nEpoches]);
     set(gca,'YGrid','on');

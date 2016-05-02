@@ -12,19 +12,23 @@ function [ imdb ] = get_imdb( datasetName, varargin )
 
 args.func = @setup_imdb_generic;
 args.rebuild = false;
+args.seed = 1;
+if ischar(datasetName) && ~isempty(datasetName) , args.datasetName = datasetName;
+else args.datasetName = 'ILSVRC2012'; end
+
 args = vl_argparse(args,varargin);
 
-datasetDir = fullfile('data',datasetName);
+datasetDir = fullfile('data',args.datasetName);
 imdbPath = fullfile(datasetDir,'imdb.mat');
 
 if ~exist(datasetDir,'dir'), 
-    error('Unknown dataset: %s', datasetName);
+    error('Unknown dataset: %s', datasetDir);
 end
 
 if exist(imdbPath,'file') && ~args.rebuild, 
     imdb = load(imdbPath);
 else
-    imdb = args.func(datasetDir);
+    imdb = args.func(datasetDir, 'datasetName', args.datasetName, 'seed', args.seed);
     save(imdbPath,'-struct','imdb');
 end
 

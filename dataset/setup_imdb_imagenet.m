@@ -1,4 +1,4 @@
-function imdb = setup_imdb_imagenet(varargin)
+function imdb = setup_imdb_imagenet(dataDir, varargin)
 % CNN_IMAGENET_SETUP_DATA  Initialize ImageNet ILSVRC CLS-LOC challenge data
 %    This function creates an IMDB structure pointing to a local copy
 %    of the ILSVRC CLS-LOC data.
@@ -35,10 +35,14 @@ function imdb = setup_imdb_imagenet(varargin)
 %    high) and/or to store the images in RAM disk (provided that
 %    sufficient RAM is available). Reading images off disk with a
 %    sufficient speed is crucial for fast training.
+opts.datasetName = 'ILSVRC2012';
+opts.seed = 1 ;
+opts = vl_argparse(opts, varargin) ;
 
-opts.dataDir = fullfile('data','ILSVRC2012') ;
+if ischar(dataDir) && ~isempty(dataDir), opts.dataDir = dataDir;
+else opts.dataDir = fullfile('data', opts.datasetName) ; end
 opts.lite = false ;
-%opts = vl_argparse(opts, varargin) ;
+opts = vl_argparse(opts, varargin) ;
 
 % -------------------------------------------------------------------------
 %                                                  Load categories metadata
