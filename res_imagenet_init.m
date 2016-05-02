@@ -85,7 +85,6 @@ net.addLayer('error5', dagnn.Loss('loss', 'topkerror', 'opts', {'topK', 5}), ...
 net.initParams();
 
 net.meta.normalization.imageSize = net.meta.inputSize;
-net.meta.inputSize = net.meta.normalization.imageSize ;
 net.meta.normalization.border = 256 - net.meta.inputSize(1:2) ;
 net.meta.normalization.interpolation = 'bicubic' ;
 net.meta.normalization.averageImage = [] ;
@@ -118,7 +117,7 @@ if strcmpi(netType, 'plain'),
 elseif strcmpi(netType, 'resnet'), 
   info = add_block_res(net, info, [w w info.lastNumChannel ch], stride, bottleneck, bn, 1); 
   for i=2:n, 
-    info = add_block_res(net, info, [w w ch ch], 1, bottleneck, bn, 0); 
+    info = add_block_res(net, info, [w w 4*ch ch], 1, bottleneck, bn, 0); 
   end
 end
 end
@@ -133,9 +132,9 @@ else
 end
 lName01 = lName0;
 
-if stride>1 || isFirst, 
-  block = dagnn.Conv('size',[1 1 f_size(3) f_size(3)], 'hasBias',false,'stride',stride, ...
-    'pad', 0, 'initMethod', 'one');
+if stride > 1 || isFirst, 
+  block = dagnn.Conv('size',[1 1 f_size(3) 4*f_size(4)], 'hasBias',false,'stride',stride, ...
+    'pad', 0, 'initMethod', 'gaussian');
   lName_tmp = lName0;
   lName0 = [lName_tmp '_down2'];
   net.addLayer(lName0, block, lName_tmp, lName0, [lName0 '_f']);
@@ -143,7 +142,7 @@ if stride>1 || isFirst,
   pidx = net.getParamIndex([lName0 '_f']);
   net.params(pidx).learningRate = 0;
   
-  add_layer_bn(net, f_size(3), lName0, [lName01 '_d2bn'], 0.1); 
+  add_layer_bn(net, 4*f_size(4), lName0, [lName01 '_d2bn'], 0.1); 
   lName0 = [lName01 '_d2bn'];
 end
 
@@ -174,7 +173,7 @@ end
 
 
 % ToDo: update sum layer
-if f_size(3)==info.lastNumChannel, 
+if 1% f_size(3)==info.lastNumChannel, 
   net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
     sprintf('sum%d',info.lastIdx));
 else
@@ -192,13 +191,10 @@ end
 function net = add_block_conv(net, out_suffix, in_name, f_size, stride, bn, relu)
 block = dagnn.Conv('size',f_size, 'hasBias',false, 'stride', stride, ...
                    'pad',[ceil(f_size(1)/2-0.5) floor(f_size(1)/2-0.5) ...
-                   %ceil(f_size(2)/2-0.5) floor(f_size(2)/2-0.5)
                    ]);
 lName = ['conv' out_suffix];
-net.addLayer(lName, block, in_name, lName, {[lName '_f']});%,[lName '_b']
-% removed the bias
-%pidx = net.getParamIndex([lName '_b']);
-%net.params(pidx).weightDecay = 0;
+net.addLayer(lName, block, in_name, lName, {[lName '_f']});
+
 if bn, 
   add_layer_bn(net, f_size(4), lName, strrep(lName,'conv','bn'), 0.1); 
   lName = strrep(lName, 'conv', 'bn');
