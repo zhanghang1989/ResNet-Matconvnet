@@ -44,6 +44,7 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 ### Changes
 0. 05/02/2016: 
 	- Added support official Matconvnet version.
+	- Added Cifar experiments.
 	- Added support for fine-tuning Pre-trained model.
 
 0. 04/27/2016: The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet). This re-implementation:
