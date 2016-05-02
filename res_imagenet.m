@@ -74,7 +74,7 @@ clear v d ;
 % -------------------------------------------------------------------------
 %                                                                     Learn
 % -------------------------------------------------------------------------
-trainfn = @cnn_train_dag;
+trainfn = @cnn_train_dag_check;
 
 [net, info] = trainfn(net, imdb, getBatchFn(opts, net.meta), ...
   'expDir', opts.expDir, ...
