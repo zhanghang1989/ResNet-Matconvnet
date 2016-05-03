@@ -1,0 +1,6 @@
+[submodule "dependencies/matconvnet"]
+	path = dependencies/matconvnet
+	url = https://github.com/vlfeat/matconvnet
+[submodule "dependencies/vlfeat"]
+	path = dependencies/vlfeat
+	url = https://github.com/vlfeat/vlfeat
