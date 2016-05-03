@@ -52,7 +52,7 @@ opts.train.val = find(imdb.images.set==3);
 % -------------------------------------------------------------------------
 %                                                             Prepare model
 % -------------------------------------------------------------------------
-net = res_finetune_init(imdb, opts.baseModel);%res_finetune_test;%
+net = res_finetune_test;%res_finetune_init(imdb, opts.baseModel);%
 
 
 % Compute image statistics (mean, RGB covariances, etc.)
@@ -79,7 +79,6 @@ clear v d ;
 func = @(a) ~isempty(a.params) ;
 trainable_layers = find(arrayfun(@(l) func(l),net.layers)); 
 
-%% updating this part! (learningRate )
 p = arrayfun(@(l) net.layers(l) , trainable_layers); 
 p = arrayfun(@(l) net.params(net.getParamIndex(l.params(1))), p, 'UniformOutput',false);
 lr = cellfun(@(l) l.learningRate, p); 
@@ -202,3 +201,4 @@ rgbm1 = mean(cat(2,rgbm1{:}),2) ;
 rgbm2 = mean(cat(3,rgbm2{:}),3) ;
 rgbMean = rgbm1 ;
 rgbCovariance = rgbm2 - rgbm1*rgbm1' ;
+
