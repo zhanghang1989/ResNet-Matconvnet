@@ -55,7 +55,8 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 
 0. 04/27/2016: Re-implementation of Residual Network:
 	- The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet). 
-	Compared with his implementation (as in the following figure), the bugs are fixed and the models are implemented based on original paper. 
+	The bugs are fixed. 
+	Comparison between implementations are shown in the following figure. 
 	- Added support for ImageNet experiments
 	- The models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
 	![compare implementation curve](figure/compare.png "Compare Implementations")
