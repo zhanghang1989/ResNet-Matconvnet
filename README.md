@@ -58,4 +58,4 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 	Compared with his implementation (as in the following figure), the bugs are fixed and the models are implemented based on original paper. 
 	- Added support for ImageNet experiments
 	- The models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
-	![compare implementation curve](figure/resnet_cifar.png "Compare Implementations")
+	![compare implementation curve](figure/compare.png "Compare Implementations")
