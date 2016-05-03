@@ -1,6 +1,7 @@
 function [net, info] = res_finetune(varargin)
 % res_finetune('datasetName', 'minc', 'datafn',...
 % @setup_imdb_minc, 'gpus',[1 2]);
+% res_finetune('gpus',[2]);
 
 setup;
 
@@ -79,21 +80,22 @@ func = @(a) ~isempty(a.params) ;
 trainable_layers = find(arrayfun(@(l) func(l),net.layers)); 
 
 %% updating this part! (learningRate )
-
-lr = arrayfun(@(l) l.learningRate, net.params(trainable_layers),'UniformOutput',false); 
+p = arrayfun(@(l) net.layers(l) , trainable_layers); 
+p = arrayfun(@(l) net.params(net.getParamIndex(l.params(1))), p, 'UniformOutput',false);
+lr = cellfun(@(l) l.learningRate, p); 
 layers_for_update = {trainable_layers(end), trainable_layers}; 
 
 % tune last layer --> tune all layers
-trainfn = @cnn_train_dag;
+trainfn = @cnn_train_dag_check;
 
 for s = 1:numel(opts.numEpochs), 
   if opts.numEpochs(s)<1, continue; end
   for i = 1:numel(trainable_layers), 
     l = trainable_layers(i); 
     if ismember(l,layers_for_update{s}), 
-      net.layers(l).learningRate = lr{i}; 
+      net.layers(l).learningRate = lr(i); 
     else
-      net.layers(l).learningRate = lr{i}*0; 
+      net.layers(l).learningRate = lr(i)*0; 
     end
   end
   [net, info] = trainfn(net, imdb, getBatchFn(opts, net.meta), ...
