@@ -1,6 +1,7 @@
 function imdb = setup_imdb_minc(dataDir, varargin)
 opts.seed = 1 ;
 opts.joint = 0;
+opts.datasetName = 'minc';
 opts = vl_argparse(opts, varargin) ;
 
 %rng(opts.seed,'twister') ;
