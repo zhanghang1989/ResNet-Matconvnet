@@ -22,7 +22,7 @@ opts.contrastNormalization = true;
 opts.meanType = 'image'; % 'pixel' | 'image'
 opts.border = [4 4 4 4]; % tblr
 opts.gpus = []; 
-opts.batchSize = 64;
+opts.batchSize = 32;
 opts.checkpointFn = [];
 [opts, varargin] = vl_argparse(opts, varargin) ;
 
@@ -51,7 +51,7 @@ opts.train.val = find(imdb.images.set==3);
 % -------------------------------------------------------------------------
 %                                                             Prepare model
 % -------------------------------------------------------------------------
-net = res_finetune_init(imdb, opts.baseModel);
+net = res_finetune_init(imdb, opts.baseModel);%res_finetune_test;%
 
 
 % Compute image statistics (mean, RGB covariances, etc.)

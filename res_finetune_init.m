@@ -38,10 +38,14 @@ pName = net.layers(end).name;
 block = dagnn.Conv('size', [h,w,in,out], 'hasBias', true, ...
                    'stride', 1, 'pad', 0);
 net.addLayer(lName, block, pName, lName, {[lName '_f'], [lName '_b']});
-net.params(net.layers(end).paramIndexes(1)).value = init_weight(opts, h, w, in, out, 'single');
-net.params(net.layers(end).paramIndexes(2)).value = zeros(out, 1, 'single');
-lName = net.layers(end).name;
+%net.params(net.layers(end).paramIndexes(1)).value = init_weight(opts, h, w, in, out, 'single');
+%net.params(net.layers(end).paramIndexes(2)).value = zeros(out, 1, 'single');
+p = net.getParamIndex(net.layers(end).params) ;
+params = net.layers(end).block.initParams() ;
+params = cellfun(@gather, params, 'UniformOutput', false) ;
+[net.params(p).value] = deal(params{:}) ;
 
+lName = net.layers(end).name;
 net.addLayer('softmax', dagnn.SoftMax(), lName, 'softmax');  
 net.addLayer('loss', dagnn.Loss('loss', 'log'), {'softmax', 'label'}, 'loss');
 net.addLayer('error', dagnn.Loss('loss', 'classerror'), {'softmax','label'}, 'error') ;
