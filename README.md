@@ -56,6 +56,5 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 	- The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet). 
 	The bugs are fixed. 
 	Comparison between implementations are shown in the following figure. 
-	- Added ImageNet experiments
-	- The models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
+	- Added ImageNet experiments. The models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
 	![compare implementation curve](figure/compare.png "Compare Implementations")
