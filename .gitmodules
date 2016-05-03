@@ -1,3 +1,0 @@
-[submodule "dependencies/vlfeat"]
-	path = dependencies/vlfeat
-	url = https://github.com/vlfeat/vlfeat.git
