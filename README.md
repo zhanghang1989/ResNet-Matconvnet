@@ -20,7 +20,7 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 	```matlab
 	run_cifar_experiments([20 32 44 56 110], 'resnet', 'gpus', [1]);
 	```
-	![training test curve](figure/resnet_cifar.png)
+	![training test curve](figure/resnet_cifar.png "Cifar Experiments")
 	
 0. **Imagenet2012.** download the dataset to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`.
 	```matlab
@@ -49,14 +49,13 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 
 ### Changes
 0. 05/02/2016: 
-	- Added support for official Matconvnet version.
-	- Added Cifar experiments.
-	- Added support for fine-tuning Pre-trained model.
+	- Supported **official Matconvnet** version.
+	- Added Cifar experiments and plots.
 
 0. 04/27/2016: Re-implementation of Residual Network:
 	- The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet). 
 	The bugs are fixed. 
 	Comparison between implementations are shown in the following figure. 
-	- Added support for ImageNet experiments
+	- Added ImageNet experiments
 	- The models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
 	![compare implementation curve](figure/compare.png "Compare Implementations")
