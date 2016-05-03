@@ -16,7 +16,7 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 ```
 	
 ### Train from Scratch
-0. **Cifar.**
+0. **Cifar.** Reproducing Figure 6 from the original paper.
 	```matlab
 	run_cifar_experiments([20 32 44 56 110], 'resnet', 'gpus', [1]);
 	```
