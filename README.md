@@ -20,7 +20,7 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 	```matlab
 	run_cifar_experiments([20 32 44 56 110], 'resnet', 'gpus', [1]);
 	```
-	![training test curve](figure/resnet_cifar.png)
+	![training test curve](figure/resnet_cifar.eps)
 	
 0. **Imagenet2012.** download the dataset to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`.
 	```matlab
@@ -59,4 +59,4 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 	Comparison between implementations are shown in the following figure. 
 	- Added support for ImageNet experiments
 	- The models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
-	![compare implementation curve](figure/compare.png "Compare Implementations")
+	![compare implementation curve](figure/compare.eps "Compare Implementations")
