@@ -162,8 +162,9 @@ else
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = f_size(4);
   add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
-    [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, bn, false); 
+    [f_size(1) f_size(2) info.lastNumChannel 4*info.lastNumChannel], 1, bn, false); 
   info.lastIdx = info.lastIdx + 1;
+  info.lastNumChannel = info.lastNumChannel*4; 
 end
 if bn, 
   lName1 = sprintf('bn%d', info.lastIdx);
