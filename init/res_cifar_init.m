@@ -163,3 +163,4 @@ net.params(pidx(3)).learningRate = lr;
 net.params(pidx(3)).trainMethod = 'average'; 
 end
 
+
