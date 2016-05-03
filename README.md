@@ -53,7 +53,9 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 	- Added Cifar experiments.
 	- Added support for fine-tuning Pre-trained model.
 
-0. 04/27/2016: The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet). This re-implementation:
+0. 04/27/2016: Re-implementation of Residual Network:
+	- The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet). 
+	Compared with his implementation (as in the following figure), the bugs are fixed and the models are implemented based on original paper. 
 	- Added support for ImageNet experiments
-	- Fixed bugs, and the models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
-
+	- The models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
+	![compare implementation curve](figure/resnet_cifar.png "Compare Implementations")
