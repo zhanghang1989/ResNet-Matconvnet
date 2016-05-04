@@ -40,11 +40,6 @@ net.addLayer('relu0',  block, 'bn0', 'relu0');
 info.lastNumChannel = 16;
 info.lastIdx = 0;
 
-%add_block_conv(net, '0000', 'image', [3 3 3 16], 1, opts.batchNormalization, true); 
-
-%info.lastNumChannel = 16;
-%info.lastIdx = 0;
-
 % Three groups of layers
 info = add_group(opts.networkType, net, n, info, 3, 16, 1, opts.batchNormalization);
 info = add_group(opts.networkType, net, n, info, 3, 32, 2, opts.batchNormalization);
