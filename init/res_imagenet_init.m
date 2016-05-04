@@ -134,7 +134,7 @@ lName01 = lName0;
 
 if stride > 1 || isFirst, 
   block = dagnn.Conv('size',[1 1 f_size(3) 4*f_size(4)], 'hasBias',false,'stride',stride, ...
-    'pad', 0, 'initMethod', 'gaussian');
+    'pad', 0);
   lName_tmp = lName0;
   lName0 = [lName_tmp '_down2'];
   net.addLayer(lName0, block, lName_tmp, lName0, [lName0 '_f']);
