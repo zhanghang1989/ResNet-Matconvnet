@@ -88,7 +88,7 @@ if strcmpi(netType, 'plain'),
 elseif strcmpi(netType, 'resnet'), 
   info = add_block_res(net, info, [w w info.lastNumChannel ch], stride, bn, true); 
   for i=2:n, 
-    info = add_block_res(net, info, [w w 4*ch ch], 1, bn, false); 
+    info = add_block_res(net, info, [w w ch ch], 1, bn, false); 
   end
 end
 end
@@ -98,14 +98,14 @@ function info = add_block_res(net, info, f_size, stride, bn, isFirst)
 lName0 = sprintf('relu%d',info.lastIdx); 
 lName_tmp = lName0;
 if stride > 1 || isFirst,  
-  block = dagnn.Conv('size',[1 1 f_size(3) 4*f_size(4)], 'hasBias',false,'stride',stride, ...
-    'pad', 0, 'initMethod', 'gaussian');
+  block = dagnn.Conv('size',[1 1 f_size(3) f_size(4)], 'hasBias',false,'stride',stride, ...
+    'pad', 0);
   lName0 = [lName_tmp '_down2'];
   net.addLayer(lName0, block, lName_tmp, lName0, [lName0 '_f']);
   pidx = net.getParamIndex([lName0 '_f']);
   net.params(pidx).learningRate = 0;
   
-  add_layer_bn(net, 4*f_size(4), lName0, [lName_tmp '_d2bn'], 0.1); 
+  add_layer_bn(net, f_size(4), lName0, [lName_tmp '_d2bn'], 0.1); 
   lName0 = lName_tmp;
   lName_tmp = [lName_tmp '_d2bn'];
 end
@@ -114,8 +114,8 @@ add_block_conv(net, sprintf('%d',info.lastIdx+1), lName0, f_size, stride, bn, tr
 info.lastIdx = info.lastIdx + 1;
 info.lastNumChannel = f_size(4);
 add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
-  [f_size(1) f_size(2) info.lastNumChannel 4*info.lastNumChannel], 1, bn, false); 
-info.lastNumChannel = 4*f_size(4);
+  [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, bn, false); 
+info.lastNumChannel = f_size(4);
 info.lastIdx = info.lastIdx + 1;
 if bn, 
   lName1 = sprintf('bn%d', info.lastIdx);
@@ -125,7 +125,6 @@ end
 
 lName0 = lName_tmp;
 
- 
 net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
 sprintf('sum%d',info.lastIdx));
 
