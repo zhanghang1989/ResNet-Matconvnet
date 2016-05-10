@@ -20,7 +20,10 @@ git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvne
 	```matlab
 	run_cifar_experiments([20 32 44 56 110], 'resnet', 'gpus', [1]);
 	```
-	![training test curve](figure/resnet_cifar.png "Cifar Experiments")
+	
+	<div style="text-align:center"><img src ="https://raw.githubusercontent.com/zhanghang1989/ResNet-Matconvnet/master/figure/plain_cifar.png" width="420" /><img src ="https://raw.githubusercontent.com/zhanghang1989/ResNet-Matconvnet/master/figure/resnet_cifar.png" width="420" /></div>	
+
+	<p style="text-align:center; font-size:75%; font-style: italic;">Cifar Experiments</p>
 	
 0. **Imagenet2012.** download the dataset to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`.
 	```matlab
