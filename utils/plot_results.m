@@ -12,7 +12,7 @@ if ~exist('measures', 'var') || isempty(measures),
   else measures = {'error', 'error5'};
   end
 end
-if ~exist('savePath', 'var'), 
+if ~exist('savePath', 'var') || isempty(savePath),  
   savePath = expDir;
 end
 

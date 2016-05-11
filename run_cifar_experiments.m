@@ -27,9 +27,9 @@ else
 end
 
 expRoot = opts.expDir; 
-opts.checkpointFn = @() plot_results(expRoot, 'cifar');
 
 for i=1:n_exp, 
+  opts.checkpointFn = @() plot_results(expRoot, 'cifar',[],[], 'plots', {MTs{i}});
   opts.expDir = fullfile(expRoot, ...
     sprintf('cifar-%s-%d', MTs{i}, Ns(i))); 
   [net,info] = res_cifar(Ns(i), 'modelType', MTs{i}, opts); 
