@@ -14,7 +14,7 @@ The code relies on [vlfeat](http://www.vlfeat.org/), and [matconvnet](http://www
 ```sh
 git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvnet.git
 ```
-If you have problem with compiling, please refer to the [link](http://zhanghang1989.github.io/ResNet/#imagenet).	
+If you have problem with compiling, please refer to the [link](http://zhanghang1989.github.io/ResNet/#compiling-vlfeat-and-matconvnet).	
 ### Train from Scratch
 0. **Cifar.** Reproducing Figure 6 from the original paper.
 	```matlab
