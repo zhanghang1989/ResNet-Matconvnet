@@ -18,6 +18,7 @@ If you have problem with compiling them, please refer to [link](http://zhanghang
 ### Train from Scratch
 0. **Cifar.** Reproducing Figure 6 from the original paper.
 	```matlab
+	run_cifar_experiments([20 32 44 56 110], 'plain', 'gpus', [1]);
 	run_cifar_experiments([20 32 44 56 110], 'resnet', 'gpus', [1]);
 	```
 	
