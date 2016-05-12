@@ -33,8 +33,10 @@ If you have problem with compiling, please refer to the [link](http://zhanghang1
 
 0. **Your own dataset.** 
 	```matlab
-	run_experiments([18 34 50 101],'datasetName',...
+	run_experiments([18 34],'datasetName',...
 	'yourdata', 'datafn', @setup_imdb_generic, 'gpus', [1 2]);
+	run_experiments([18 34],'datasetName',...
+	'minc', 'datafn', @setup_imdb_minc, 'gpus', [1 2]);
 	```
 
 ### Fine-tune Your Own
