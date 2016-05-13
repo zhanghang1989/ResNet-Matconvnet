@@ -28,7 +28,7 @@ If you have problem with compiling, please refer to the [link](http://zhanghang1
 	
 0. **Imagenet2012.** download the dataset to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`.
 	```matlab
-	run_experiments([18 34 50 101 152], 'gpus', [1 2 3 4 5 6 7 8]);
+	run_experiments([50 101 152], 'gpus', [1 2 3 4 5 6 7 8]);
 	```
 
 0. **Your own dataset.** 
