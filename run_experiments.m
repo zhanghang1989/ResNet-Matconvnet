@@ -17,6 +17,7 @@ opts.border = [4 4 4 4];
 opts.gpus = [1];
 opts.datasetName = 'ILSVRC2012';
 opts.datafn = @setup_imdb_imagenet;
+opts.nClasses = 1000;
 
 opts = vl_argparse(opts, varargin); 
 
