@@ -36,7 +36,7 @@ If you have problem with compiling, please refer to the [link](http://zhanghang1
 	run_experiments([18 34],'datasetName',...
 	'yourdata', 'datafn', @setup_imdb_generic, 'gpus', [1 2]);
 	run_experiments([18 34],'datasetName',...
-	'minc', 'datafn', @setup_imdb_minc, 'gpus', [1 2]);
+	'minc', 'datafn', @setup_imdb_minc, 'nClasses', 23, 'gpus', [1 2]);
 	```
 
 ### Fine-tune Your Own
