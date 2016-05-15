@@ -149,7 +149,7 @@ if nargout > 0
     im = gpuArray(im) ;
   end
   labels = imdb.images.label(batch) ;
-  inputs = {'image', im, 'label', labels} ;
+  inputs = {'data', im, 'label', labels} ;
 end
 
 % -------------------------------------------------------------------------
