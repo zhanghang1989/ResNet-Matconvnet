@@ -10,6 +10,7 @@ end
 
 opts.batchNormalization = true; 
 opts.networkType = 'resnet'; % 'plain' | 'resnet'
+opts.reLUafterSum = true;
 opts = vl_argparse(opts, varargin); 
 
 nClasses = 10;
@@ -41,14 +42,17 @@ info.lastNumChannel = 16;
 info.lastIdx = 0;
 
 % Three groups of layers
-info = add_group(opts.networkType, net, n, info, 3, 16, 1, opts.batchNormalization);
-info = add_group(opts.networkType, net, n, info, 3, 32, 2, opts.batchNormalization);
-info = add_group(opts.networkType, net, n, info, 3, 64, 2, opts.batchNormalization); 
+info = add_group(opts.networkType, net, n, info, 3, 16, 1, opts.batchNormalization, opts.reLUafterSum);
+info = add_group(opts.networkType, net, n, info, 3, 32, 2, opts.batchNormalization, opts.reLUafterSum);
+info = add_group(opts.networkType, net, n, info, 3, 64, 2, opts.batchNormalization, opts.reLUafterSum); 
 
 % Prediction & loss layers
 block = dagnn.Pooling('poolSize', [8 8], 'method', 'avg', 'pad', 0, 'stride', 1);
-net.addLayer('pool_final', block, sprintf('relu%d',info.lastIdx), 'pool_final');
-
+if opts.reLUafterSum 
+    net.addLayer('pool_final', block, sprintf('relu%d',info.lastIdx), 'pool_final');
+else
+    net.addLayer('pool_final', block, sprintf('sum%d',info.lastIdx), 'pool_final');
+end
 block = dagnn.Conv('size', [1 1 info.lastNumChannel nClasses], 'hasBias', true, ...
                    'stride', 1, 'pad', 0);
 lName = sprintf('fc%d', info.lastIdx+1);
@@ -68,7 +72,7 @@ net.initParams();
 end
 
 % Add a group of layers containing 2n conv layers (w/ or w/o resnet skip connections)
-function info = add_group(netType, net, n, info, w, ch, stride, bn)
+function info = add_group(netType, net, n, info, w, ch, stride, bn, reLUafterSum)
 if strcmpi(netType, 'plain'), 
   % the 1st layer in the group may downsample the activations by half
   add_block_conv(net, sprintf('%d', info.lastIdx+1), sprintf('relu%d', info.lastIdx), ...
@@ -81,16 +85,20 @@ if strcmpi(netType, 'plain'),
     info.lastIdx = info.lastIdx + 1;
   end
 elseif strcmpi(netType, 'resnet'), 
-  info = add_block_res(net, info, [w w info.lastNumChannel ch], stride, bn, true); 
+  info = add_block_res(net, info, [w w info.lastNumChannel ch], stride, bn, true, reLUafterSum); 
   for i=2:n, 
-    info = add_block_res(net, info, [w w ch ch], 1, bn, false); 
+    info = add_block_res(net, info, [w w ch ch], 1, bn, false, reLUafterSum); 
   end
 end
 end
 
 % Add a smallest residual unit (2 conv layers)
-function info = add_block_res(net, info, f_size, stride, bn, isFirst)
-lName0 = sprintf('relu%d',info.lastIdx); 
+function info = add_block_res(net, info, f_size, stride, bn, isFirst, reLUafterSum)
+if reLUafterSum || info.lastIdx == 0
+    lName0 = sprintf('relu%d',info.lastIdx); 
+else
+    lName0 = sprintf('sum%d',info.lastIdx); 
+end
 lName_tmp = lName0;
 if stride > 1 || isFirst,  
   block = dagnn.Conv('size',[1 1 f_size(3) f_size(4)], 'hasBias',false,'stride',stride, ...
@@ -123,9 +131,12 @@ lName0 = lName_tmp;
 net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
 sprintf('sum%d',info.lastIdx));
 
-block = dagnn.ReLU('leak', 0); 
-net.addLayer(sprintf('relu%d', info.lastIdx), block, sprintf('sum%d', info.lastIdx), ...
-  sprintf('relu%d', info.lastIdx)); 
+if reLUafterSum
+    block = dagnn.ReLU('leak', 0); 
+    net.addLayer(sprintf('relu%d', info.lastIdx), block, sprintf('sum%d', info.lastIdx), ...
+      sprintf('relu%d', info.lastIdx)); 
+end
+
 end
 
 % Add a conv layer (followed by optional batch normalization & relu) 

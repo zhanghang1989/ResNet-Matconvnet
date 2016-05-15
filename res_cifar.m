@@ -1,6 +1,9 @@
 function [net, info] = res_cifar(m, varargin)
-
+% res_cifar(20, 'modelType', 'resnet', 'reLUafterSum', false,...
+% 'expDir', 'data/exp/cifar-resNOreLU-20', 'gpus', [2])
+setup;
 opts.modelType = 'plain' ;
+opts.reLUafterSum = true;
 [opts, varargin] = vl_argparse(opts, varargin) ;
 
 opts.expDir = fullfile('exp', ...
@@ -28,7 +31,7 @@ end
 % -------------------------------------------------------------------------
 
 net = res_cifar_init(m, 'networkType', opts.modelType, ...
-  'batchNormalization', opts.bn) ;
+  'batchNormalization', opts.bn, 'reLUafterSum', opts.reLUafterSum) ;
 
 if exist(opts.imdbPath, 'file')
   imdb = load(opts.imdbPath) ;

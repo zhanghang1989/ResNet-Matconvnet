@@ -1,5 +1,5 @@
 function run_experiments(Ns, varargin)
-% Usage example: run_experiments([18 34 50 101 152], 'gpus', [1 2]); 
+% Usage example: run_experiments([18 34 50 101 152], 'gpus', [1 2 3 4]); 
 % On you own dataset: run_experiments([18 34 50 101],'datasetName',...
 % 'reflectance', 'datafn', @setup_imdb_reflectance, 'gpus', [1 2]);
 % Options: 

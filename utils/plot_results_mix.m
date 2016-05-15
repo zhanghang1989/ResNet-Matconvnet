@@ -1,6 +1,6 @@
 function plot_results_mix(expDir, datasetName, measures, savePath, varargin)
 % Usage example: 
-% plot_results_mix('data\exp','cifar',[],[],'plots',{'plain','bcnn'})
+% plot_results_mix('data\exp','cifar',[],[],'plots',{'plain','resnet'})
 
 opts.plots = {'resnet'};
 opts = vl_argparse(opts, varargin);
