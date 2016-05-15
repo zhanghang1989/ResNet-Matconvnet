@@ -1,11 +1,5 @@
-function net = res_finetune_init(imdb, net)
-
-opts.weightInitMethod = 'xavierimproved' ;
-opts.scale = 1; 
-
-if ~exist('net', 'var') || isempty(net), 
-  net = 'imagenet-resnet-50-dag';
-end
+function net = res_finetune_init(imdb, n)
+net = sprintf('imagenet-resnet-%d-dag', n); 
 
 if  ischar(net), 
   net_path = fullfile('data','models',[net '.mat']);
@@ -54,29 +48,5 @@ net.addLayer('error5', dagnn.Loss('loss', 'topkerror', 'opts', {'topK', 5}), ...
 
 net.meta.augmentation.rgbVariance = zeros(0,3) ;
 net.meta.augmentation.transformation = 'stretch' ;
-
-end
-
-
-% -------------------------------------------------------------------------
-function weights = init_weight(opts, h, w, in, out, type)
-% -------------------------------------------------------------------------
-% See K. He, X. Zhang, S. Ren, and J. Sun. Delving deep into
-% rectifiers: Surpassing human-level performance on imagenet
-% classification. CoRR, (arXiv:1502.01852v1), 2015.
-
-switch lower(opts.weightInitMethod)
-  case 'gaussian'
-    sc = 0.01/opts.scale ;
-    weights = randn(h, w, in, out, type)*sc;
-  case 'xavier'
-    sc = sqrt(3/(h*w*in)) ;
-    weights = (rand(h, w, in, out, type)*2 - 1)*sc ;
-  case 'xavierimproved'
-    sc = sqrt(2/(h*w*out)) ;
-    weights = randn(h, w, in, out, type)*sc ;
-  otherwise
-    error('Unknown weight initialization method''%s''', opts.weightInitMethod) ;
-end
 
 end

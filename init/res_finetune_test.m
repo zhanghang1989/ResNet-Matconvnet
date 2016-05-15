@@ -1,7 +1,5 @@
-function net = res_finetune_test()
-n = 50;
-net = 'imagenet-resnet-50-dag';
- 
+function net = res_finetune_test(n, varargin)
+net = sprintf('imagenet-resnet-%d-dag', n); 
 net_path = fullfile('data','models',[net '.mat']);
 netp = dagnn.DagNN.loadobj(load(net_path));
 
@@ -10,7 +8,7 @@ opts.networkType = 'resnet'; % 'plain' | 'resnet'
 opts.bottleneck = false; % only used when n is an array
 opts.nClasses = 21;
 nClasses = opts.nClasses;
-
+opts = vl_argparse(opts, varargin) ;
 
 net = dagnn.DagNN();
 
@@ -19,8 +17,6 @@ if numel(n)==4,
   Ns = n;
 else
   switch n, 
-    case 18, Ns = [2 2 2 2]; opts.bottleneck = false; 
-    case 34, Ns = [3 4 6 3]; opts.bottleneck = false; 
     case 50, Ns = [3 4 6 3]; opts.bottleneck = true;
     case 101, Ns = [3 4 23 3]; opts.bottleneck = true; 
     case 152, Ns = [3 8 36 3]; opts.bottleneck = true; 
@@ -44,10 +40,19 @@ end
 net.meta.trainOpts.numEpochs = numel(net.meta.trainOpts.learningRate) ;
 
 % First conv layer
-block = dagnn.Conv('size',  [7 7 3 64], 'hasBias', true, ...
-                   'stride', 2, 'pad', [3 3 3 3]);
-lName = 'conv0';
+switch n
+    case 50
+        block = dagnn.Conv('size',  [7 7 3 64], 'hasBias', true, ...
+            'stride', 2, 'pad', [3 3 3 3]);
+        lName = 'conv0';
 net.addLayer(lName, block, 'data', lName, {[lName '_f'], [lName '_b']});
+    case {101, 152}
+        block = dagnn.Conv('size',  [7 7 3 64], 'hasBias', false, ...
+            'stride', 2, 'pad', [3 3 3 3]);
+        lName = 'conv0';
+    net.addLayer(lName, block, 'data', lName, {[lName '_f']});
+end
+
 add_layer_bn(net, 64, lName, 'bn0', 0.1); 
 block = dagnn.ReLU('leak',0);
 net.addLayer('relu0',  block, 'bn0', 'relu0');
@@ -141,7 +146,7 @@ lName01 = lName0;
 
 if stride > 1 || isFirst, 
   block = dagnn.Conv('size',[1 1 f_size(3) 4*f_size(4)], 'hasBias',false,'stride',stride, ...
-    'pad', 0, 'initMethod', 'gaussian');
+    'pad', 0);
   lName_tmp = lName0;
   lName0 = [lName_tmp '_down2'];
   net.addLayer(lName0, block, lName_tmp, lName0, [lName0 '_f']);

@@ -40,10 +40,19 @@ end
 net.meta.trainOpts.numEpochs = numel(net.meta.trainOpts.learningRate) ;
 
 % First conv layer
-block = dagnn.Conv('size',  [7 7 3 64], 'hasBias', true, ...
-                   'stride', 2, 'pad', [3 3 3 3]);
-lName = 'conv0';
-net.addLayer(lName, block, 'image', lName, {[lName '_f'], [lName '_b']});
+switch n
+    case {18, 34, 50}
+        block = dagnn.Conv('size',  [7 7 3 64], 'hasBias', true, ...
+            'stride', 2, 'pad', [3 3 3 3]);
+        lName = 'conv0';
+net.addLayer(lName, block, 'data', lName, {[lName '_f'], [lName '_b']});
+    case {101, 152}
+        block = dagnn.Conv('size',  [7 7 3 64], 'hasBias', false, ...
+            'stride', 2, 'pad', [3 3 3 3]);
+        lName = 'conv0';
+    net.addLayer(lName, block, 'data', lName, {[lName '_f']});
+end
+
 add_layer_bn(net, 64, lName, 'bn0', 0.1); 
 block = dagnn.ReLU('leak',0);
 net.addLayer('relu0',  block, 'bn0', 'relu0');

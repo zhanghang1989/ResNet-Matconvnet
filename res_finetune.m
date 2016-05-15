@@ -1,6 +1,6 @@
 function [net, info] = res_finetune(varargin)
 % res_finetune('datasetName', 'minc', 'datafn',...
-% @setup_imdb_minc, 'gpus',[1 2]);
+% @setup_imdb_minc, 'nClasses', 23, 'gpus',[1 2]);
 % res_finetune('gpus',[2]);
 
 setup;
@@ -12,7 +12,7 @@ opts.datafn = @setup_imdb_reflectance;
 opts.dataDir = fullfile('data',opts.datasetName) ;
 opts.imdb       = [];
 opts.expDir     = fullfile('data','exp_ft', opts.datasetName) ;
-opts.baseModel = 'imagenet-resnet-50-dag';
+opts.baseModel = 50;
 opts.numEpochs  = [10 55]; 
 opts.networkType = 'resnet' ;
 opts.batchNormalization = true ;
@@ -52,7 +52,7 @@ opts.train.val = find(imdb.images.set==3);
 % -------------------------------------------------------------------------
 %                                                             Prepare model
 % -------------------------------------------------------------------------
-net = res_finetune_test;%res_finetune_init(imdb, opts.baseModel);%
+net = res_finetune_test(opts.baseModel, );%res_finetune_init(imdb, opts.baseModel);%
 
 
 % Compute image statistics (mean, RGB covariances, etc.)
