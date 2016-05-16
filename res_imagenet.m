@@ -12,9 +12,10 @@ opts.datafn = @setup_imdb_imagenet;
 
 opts.dataDir = fullfile('data',opts.datasetName) ;
 opts.imdb       = [];
-opts.expDir     = fullfile('data','exp') ;
-
 opts.networkType = 'resnet' ;
+opts.expDir     = fullfile('data','exp', ...
+    sprintf('%s-%s-%d', opts.datasetName, opts.networkType , n)) ;
+
 opts.batchNormalization = true ;
 opts.nClasses = 1000;
 opts.batchSize = 256;

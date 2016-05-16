@@ -1,6 +1,6 @@
 function [net, info] = res_cifar(m, varargin)
 % res_cifar(20, 'modelType', 'resnet', 'reLUafterSum', false,...
-% 'expDir', 'data/exp/cifar-resNOreLU-20', 'gpus', [2])
+% 'expDir', 'data/exp/cifar-resNOrelu-20', 'gpus', [2])
 setup;
 opts.modelType = 'plain' ;
 opts.reLUafterSum = true;
