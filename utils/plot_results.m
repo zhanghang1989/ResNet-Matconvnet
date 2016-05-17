@@ -1,6 +1,7 @@
 function plot_results(expDir, datasetName, measures, savePath, varargin)
 % Usage example: plot_results('exp', 'cifar', {'error'}, 'exp/summary.pdf');
 opts.plots = {'resnet'};
+opts.ub = .2;
 opts = vl_argparse(opts, varargin); 
 
 if ~exist('datasetName', 'var') || isempty(datasetName), 
@@ -51,7 +52,7 @@ for p = plots
     title(p) ;
     legend(Hs,leg{:},'Location','NorthEast') ;
 %    axis square; 
-    ylim([0 .2]);
+    ylim([0 opts.ub]);
 %    ylim([0 .75]);
     %xlim([0 nEpoches]);
     set(gca,'YGrid','on');
