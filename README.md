@@ -69,4 +69,4 @@ If you have problem with compiling, please refer to the [link](http://zhanghang1
 
 0. 04/27/2016: Re-implementation of Residual Network:
 	- The code benefits from Hang Su's [implementation](https://github.com/suhangpro/matresnet). 
-	- Added ImageNet experiments. The models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
+	- The generated models are compatitible with [the converted models](http://www.vlfeat.org/matconvnet/pretrained). 
