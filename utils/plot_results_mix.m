@@ -9,7 +9,7 @@ if ~exist('datasetName', 'var') || isempty(datasetName),
     datasetName = 'cifar';
 end
 if ~exist('measures', 'var') || isempty(measures),
-    if strcmpi(datasetName, 'cifar'), measures = {'error', 'time'};
+    if strcmpi(datasetName, 'cifar'), measures = {'error'};
     elseif strcmpi(datasetName, 'imagenet'), measures = {'error', 'error5'};
     else measures = {'error', 'error5'};
     end

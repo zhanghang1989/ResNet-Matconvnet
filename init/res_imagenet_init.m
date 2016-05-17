@@ -4,6 +4,7 @@ opts.batchNormalization = true;
 opts.networkType = 'resnet'; % 'plain' | 'resnet'
 opts.bottleneck = false; % only used when n is an array
 opts.nClasses = 1000;
+opts.reLUafterSum = true;
 opts = vl_argparse(opts, varargin); 
 nClasses = opts.nClasses;
 
@@ -66,15 +67,18 @@ info.lastIdx = 0;
 info.lastName = 'pool0'; 
 
 % Four groups of layers
-info = add_group(opts.networkType, net, Ns(1), info, 3, 64,  1, opts.bottleneck, opts.batchNormalization);
-info = add_group(opts.networkType, net, Ns(2), info, 3, 128, 2, opts.bottleneck, opts.batchNormalization);
-info = add_group(opts.networkType, net, Ns(3), info, 3, 256, 2, opts.bottleneck, opts.batchNormalization); 
-info = add_group(opts.networkType, net, Ns(4), info, 3, 512, 2, opts.bottleneck, opts.batchNormalization); 
+info = add_group(opts.networkType, net, Ns(1), info, 3, 64,  1, opts.bottleneck, opts.batchNormalization, opts.reLUafterSum);
+info = add_group(opts.networkType, net, Ns(2), info, 3, 128, 2, opts.bottleneck, opts.batchNormalization, opts.reLUafterSum);
+info = add_group(opts.networkType, net, Ns(3), info, 3, 256, 2, opts.bottleneck, opts.batchNormalization, opts.reLUafterSum); 
+info = add_group(opts.networkType, net, Ns(4), info, 3, 512, 2, opts.bottleneck, opts.batchNormalization, opts.reLUafterSum); 
 
 % Prediction & loss layers
 block = dagnn.Pooling('poolSize', [7 7], 'method', 'avg', 'pad', 0, 'stride', 1);
-net.addLayer('pool_final', block, sprintf('relu%d',info.lastIdx), 'pool_final');
-
+if opts.reLUafterSum 
+    net.addLayer('pool_final', block, sprintf('relu%d',info.lastIdx), 'pool_final');
+else
+    net.addLayer('pool_final', block, sprintf('sum%d',info.lastIdx), 'pool_final');
+end
 block = dagnn.Conv('size', [1 1 info.lastNumChannel nClasses], 'hasBias', true, ...
                    'stride', 1, 'pad', 0);
 lName = sprintf('fc%d', info.lastIdx+1);
@@ -101,10 +105,10 @@ net.meta.normalization.keepAspect = true ;
 net.meta.augmentation.rgbVariance = zeros(0,3) ;
 net.meta.augmentation.transformation = 'stretch' ;
 
-end
+
 
 % Add a group of layers containing 2n/3n conv layers
-function info = add_group(netType, net, n, info, w, ch, stride, bottleneck, bn)
+function info = add_group(netType, net, n, info, w, ch, stride, bottleneck, bn, reLUafterSum)
 if strcmpi(netType, 'plain'), 
    % TODO: update 'plain', add bn
   if isfield(info, 'lastName'), 
@@ -124,23 +128,26 @@ if strcmpi(netType, 'plain'),
     info.lastIdx = info.lastIdx + 1;
   end
 elseif strcmpi(netType, 'resnet'), 
-  info = add_block_res(net, info, [w w info.lastNumChannel ch], stride, bottleneck, bn, 1); 
+  info = add_block_res(net, info, [w w info.lastNumChannel ch], stride, bottleneck, bn, 1, reLUafterSum); 
   for i=2:n, 
-    info = add_block_res(net, info, [w w 4*ch ch], 1, bottleneck, bn, 0); 
+    info = add_block_res(net, info, [w w 4*ch ch], 1, bottleneck, bn, 0, reLUafterSum); 
   end
 end
-end
+
 
 % Add a smallest residual unit (2/3 conv layers)
-function info = add_block_res(net, info, f_size, stride, bottleneck, bn, isFirst)
+function info = add_block_res(net, info, f_size, stride, bottleneck, bn, isFirst, reLUafterSum)
+
 if isfield(info, 'lastName'), 
   lName0 = info.lastName;
   info = rmfield(info, 'lastName'); 
-else
+elseif reLUafterSum || info.lastIdx == 0
   lName0 = sprintf('relu%d',info.lastIdx); 
+else
+    lName0 = sprintf('sum%d',info.lastIdx); 
 end
-lName01 = lName0;
 
+lName01 = lName0;
 if stride > 1 || isFirst, 
   block = dagnn.Conv('size',[1 1 f_size(3) 4*f_size(4)], 'hasBias',false,'stride',stride, ...
     'pad', 0);
@@ -185,12 +192,13 @@ end
 net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
 sprintf('sum%d',info.lastIdx));
 
-
 % relu
-block = dagnn.ReLU('leak', 0); 
-net.addLayer(sprintf('relu%d', info.lastIdx), block, sprintf('sum%d', info.lastIdx), ...
-  sprintf('relu%d', info.lastIdx)); 
+if reLUafterSum
+    block = dagnn.ReLU('leak', 0); 
+    net.addLayer(sprintf('relu%d', info.lastIdx), block, sprintf('sum%d', info.lastIdx), ...
+    sprintf('relu%d', info.lastIdx)); 
 end
+
 
 % Add a conv layer (followed by optional batch normalization & relu) 
 function net = add_block_conv(net, out_suffix, in_name, f_size, stride, bn, relu)
@@ -208,7 +216,7 @@ if relu,
   block = dagnn.ReLU('leak',0);
   net.addLayer(['relu' out_suffix], block, lName, ['relu' out_suffix]);
 end
-end
+
 
 % Add a batch normalization layer
 function net = add_layer_bn(net, n_ch, in_name, out_name, lr)
@@ -220,5 +228,5 @@ net.params(pidx(1)).weightDecay = 0;
 net.params(pidx(2)).weightDecay = 0; 
 net.params(pidx(3)).learningRate = lr;
 net.params(pidx(3)).trainMethod = 'average'; 
-end
+
 

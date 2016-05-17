@@ -69,7 +69,7 @@ net.addLayer('error', dagnn.Loss('loss', 'classerror'), {'softmax','label'}, 'er
 
 net.initParams();
 
-end
+
 
 % Add a group of layers containing 2n conv layers (w/ or w/o resnet skip connections)
 function info = add_group(netType, net, n, info, w, ch, stride, bn, reLUafterSum)
@@ -90,7 +90,7 @@ elseif strcmpi(netType, 'resnet'),
     info = add_block_res(net, info, [w w ch ch], 1, bn, false, reLUafterSum); 
   end
 end
-end
+
 
 % Add a smallest residual unit (2 conv layers)
 function info = add_block_res(net, info, f_size, stride, bn, isFirst, reLUafterSum)
@@ -137,7 +137,7 @@ if reLUafterSum
       sprintf('relu%d', info.lastIdx)); 
 end
 
-end
+
 
 % Add a conv layer (followed by optional batch normalization & relu) 
 function net = add_block_conv(net, out_suffix, in_name, f_size, stride, bn, relu)
@@ -154,7 +154,6 @@ if relu,
   block = dagnn.ReLU('leak',0);
   net.addLayer(['relu' out_suffix], block, lName, ['relu' out_suffix]);
 end
-end
 
 % Add a batch normalization layer
 function net = add_layer_bn(net, n_ch, in_name, out_name, lr)
@@ -166,6 +165,5 @@ net.params(pidx(1)).weightDecay = 0;
 net.params(pidx(2)).weightDecay = 0; 
 net.params(pidx(3)).learningRate = lr;
 net.params(pidx(3)).trainMethod = 'average'; 
-end
 
 
