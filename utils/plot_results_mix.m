@@ -3,6 +3,7 @@ function plot_results_mix(expDir, datasetName, measures, savePath, varargin)
 % plot_results_mix('data\exp','cifar',[],[],'plots',{'plain','resnet'})
 
 opts.plots = {'resnet'};
+opts.ub = .2;
 opts = vl_argparse(opts, varargin);
 
 if ~exist('datasetName', 'var') || isempty(datasetName),
@@ -58,7 +59,7 @@ for k = 1:numel(measures),
     legend(Hs,leg{:},'Location','NorthEast') ;
     %    axis square;
     if k<numel(measures) || k==1,
-        ylim([0 .2]);
+        ylim([0 opts.ub]);
     end
     %xlim([0 nEpoches]);
     set(gca,'YGrid','on');
