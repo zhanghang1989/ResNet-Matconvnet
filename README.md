@@ -22,10 +22,14 @@ If you have problem with compiling, please refer to the [link](http://zhanghang1
 	run_cifar_experiments([20 32 44 56 110], 'resnet', 'gpus', [1]);
 	```
 	
-	<div style="text-align:center"><img src ="https://raw.githubusercontent.com/zhanghang1989/ResNet-Matconvnet/master/figure/plain_cifar.png" width="420" /><img src ="https://raw.githubusercontent.com/zhanghang1989/ResNet-Matconvnet/master/figure/resnet_cifar.png" width="420" /></div>	
-
 	<p style="text-align:center; font-size:75%; font-style: italic;">Cifar Experiments</p>
+
+	<div style="text-align:center"><img src ="https://raw.githubusercontent.com/zhanghang1989/ResNet-Matconvnet/master/figure/plain_cifar.png" width="420" /><img src ="https://raw.githubusercontent.com/zhanghang1989/ResNet-Matconvnet/master/figure/resnet_cifar.png" width="420" /></div>	
 	
+	Reproducing the experiments in Facebook [blog](http://torch.ch/blog/2016/02/04/resnets.html). Removing ReLU layer at the end of each residual unit, we observe a small but significant improvement in test performance and the converging progress becomes smoother. 
+	
+	<div style="text-align:center"><img src ="https://raw.githubusercontent.com/zhanghang1989/ResNet-Matconvnet/master/figure/resnet_relu.png" width="420" /></div>	
+
 0. **Imagenet2012.** download the dataset to `data/ILSVRC2012` and follow the instructions in `setup_imdb_imagenet.m`.
 	```matlab
 	run_experiments([50 101 152], 'gpus', [1 2 3 4 5 6 7 8]);
