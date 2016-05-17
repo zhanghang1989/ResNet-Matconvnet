@@ -61,7 +61,7 @@ If you have problem with compiling, please refer to the [link](http://zhanghang1
 	```
 
 ### Changes
-0. 05/17/2016: 
+0. 05/17/2016: Reproducing the experiments in Facebook [blog](http://torch.ch/blog/2016/02/04/resnets.html), removing ReLU layer at the end of each residual unit.
 0. 05/02/2016: 
 	- Supported **official Matconvnet** version.
 	- Added Cifar experiments and plots.
