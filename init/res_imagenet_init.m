@@ -130,7 +130,12 @@ if strcmpi(netType, 'plain'),
 elseif strcmpi(netType, 'resnet'), 
   info = add_block_res(net, info, [w w info.lastNumChannel ch], stride, bottleneck, bn, 1, reLUafterSum); 
   for i=2:n, 
-    info = add_block_res(net, info, [w w 4*ch ch], 1, bottleneck, bn, 0, reLUafterSum); 
+        if bottleneck,
+            info = add_block_res(net, info, [w w 4*ch ch], 1, bottleneck, bn, 0, reLUafterSum);
+        else
+            info = add_block_res(net, info, [w w ch ch], 1, bottleneck, bn, 0, reLUafterSum);
+        end
+      %info = add_block_res(net, info, [w w 4*ch ch], 1, bottleneck, bn, 0, reLUafterSum); 
   end
 end
 
@@ -149,7 +154,12 @@ end
 
 lName01 = lName0;
 if stride > 1 || isFirst, 
-  block = dagnn.Conv('size',[1 1 f_size(3) 4*f_size(4)], 'hasBias',false,'stride',stride, ...
+  if bottleneck,
+      ch = 4*f_size(4);
+  else
+      ch = f_size(4);
+  end
+  block = dagnn.Conv('size',[1 1 f_size(3) ch], 'hasBias',false,'stride',stride, ...
     'pad', 0);
   lName_tmp = lName0;
   lName0 = [lName_tmp '_down2'];
@@ -158,7 +168,7 @@ if stride > 1 || isFirst,
   pidx = net.getParamIndex([lName0 '_f']);
   net.params(pidx).learningRate = 0;
   
-  add_layer_bn(net, 4*f_size(4), lName0, [lName01 '_d2bn'], 0.1); 
+  add_layer_bn(net, ch, lName0, [lName01 '_d2bn'], 0.1); 
   lName0 = [lName01 '_d2bn'];
 end
 
@@ -178,9 +188,8 @@ else
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = f_size(4);
   add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
-    [f_size(1) f_size(2) info.lastNumChannel 4*info.lastNumChannel], 1, bn, false); 
-  info.lastIdx = info.lastIdx + 1;
-  info.lastNumChannel = info.lastNumChannel*4; 
+    [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, bn, false); 
+  info.lastIdx = info.lastIdx + 1; 
 end
 if bn, 
   lName1 = sprintf('bn%d', info.lastIdx);
