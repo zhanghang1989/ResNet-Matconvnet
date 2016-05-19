@@ -25,9 +25,8 @@ if isempty(strfind(savePath,'.pdf')) || strfind(savePath,'.pdf')~=numel(savePath
 end
 
 plots = opts.plots;
-switchFigure(2) ; clf ;
+switchFigure(1) ; clf ;
 cmap = lines;
-
 
 for k = 1:numel(measures),
     subplot(numel(measures),1,...
@@ -66,7 +65,7 @@ for k = 1:numel(measures),
 end
 
 drawnow ;
-print(savePath, '-dpdf') ;
+print(1, savePath, '-dpdf') ;
 
 
 function epoch = findLastCheckpoint(modelDir)
