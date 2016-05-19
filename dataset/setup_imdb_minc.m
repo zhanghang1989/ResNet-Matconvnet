@@ -43,25 +43,4 @@ imdb.segments.mask = strrep(imdb.images.name, 'image', 'mask') ;
 imdb.meta.classes = imdb.classes.name ;
 imdb.meta.inUse = true(1, numel(imdb.meta.classes)) ;
 imdb.segments.difficult = false(1, numel(imdb.segments.id)) ;
-
-if (opts.joint)
-    annoPath = fullfile(dataDir, 'labels', 'labels_joint_anno.txt');
-    imdb.images.class = -1 * ones(numel(imdb.meta.classes), numel(imdb.images.name));
-    fid = fopen(annoPath);
-    if (fid > 0)
-        lines = textscan(fid, '%s', 'Delimiter', '\n');
-        lines = lines{1};
-        for ii = 1 : numel(lines)
-            parts = strsplit(lines{ii}, ' ');
-            parts = parts(1: end - 1);
-            imName = parts{1};
-            parts = parts{2 : end};
-            keyAttr = imName(1 : find(imName == '/') - 1);
-            imId = strcmp(imdb.images.name, imName);
-            imdb.images.class(ismember(imdb.meta.classes, parts), imId) = 1;
-            imdb.images.class(ismember(imdb.meta.classes, keyAttr), imId) = 1;
-        end
-    end
-    imdb.segments.label = imdb.images.class;
-end
 imdb.images.label = imdb.images.class ;
