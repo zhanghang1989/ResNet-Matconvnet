@@ -19,6 +19,7 @@ opts.expDir     = fullfile('data','exp', ...
 opts.batchNormalization = true ;
 opts.nClasses = 1000;
 opts.batchSize = 256;
+opts.numAugments = 1 ;
 opts.numEpochs = 110;
 opts.bn = true;
 opts.whitenData = true;
@@ -98,6 +99,7 @@ bopts.border = meta.normalization.border ;
 bopts.averageImage = meta.normalization.averageImage ;
 bopts.rgbVariance = meta.augmentation.rgbVariance ;
 bopts.transformation = meta.augmentation.transformation ;
+bopts.numAugments = opts.numAugments ; 
 
 switch lower(opts.networkType)
   case 'simplenn'

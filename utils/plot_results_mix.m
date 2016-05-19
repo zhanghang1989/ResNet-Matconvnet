@@ -12,10 +12,10 @@ end
 if ~exist('measures', 'var') || isempty(measures),
     if strcmpi(datasetName, 'cifar'), measures = {'error'};
     elseif strcmpi(datasetName, 'imagenet'), measures = {'error', 'error5'};
-    else measures = {'error', 'error5'};
+    else measures = {'error'};
     end
 end
-if ~exist('savePath', 'var'),
+if ~exist('savePath', 'var') || isempty(savePath),
     savePath = expDir;
 end
 
@@ -46,9 +46,9 @@ for k = 1:numel(measures),
             if epoch==0, continue; end
             load(fullfile(tmpDir,sprintf('net-epoch-%d.mat',epoch)),'stats');
             plot([stats.train.(measures{k})], ':','Color',...
-                cmap(find(strcmp(p,plots))+find(Ns==n)*numel(plots),:),'LineWidth',1.5);
-            Hs(end+1) = plot([stats.val.(measures{k})],...
-                '-','Color',cmap(find(strcmp(p,plots))+find(Ns==n)*numel(plots),:),'LineWidth',1.5);
+                cmap((find(strcmp(p,plots))-1)*10 + find(Ns==n),:),'LineWidth',1.5);
+            Hs(end+1) = plot([stats.val.(measures{k})],'-','Color',...
+                cmap((find(strcmp(p,plots))-1)*10 + find(Ns==n),:),'LineWidth',1.5);
             leg{end+1} = sprintf('%s-%d',p,n);
             if numel(stats.train)>nEpoches, nEpoches = numel(stats.train); end
         end
