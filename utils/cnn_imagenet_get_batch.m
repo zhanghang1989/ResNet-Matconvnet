@@ -5,7 +5,8 @@ opts.imageSize = [227, 227] ;
 opts.border = [29, 29] ;
 opts.keepAspect = true ;
 opts.numAugments = 1 ;
-opts.transformation = 'none' ;
+opts.transformation = 'none'; 
+opts.affine = false;
 opts.averageImage = [] ;
 opts.rgbVariance = zeros(0,3,'single') ;
 opts.interpolation = 'bilinear' ;
@@ -93,7 +94,36 @@ for i=1:numel(images)
                    'scale', factor, ...
                    'method', opts.interpolation) ;
   end
-
+  
+  if opts.affine && ~strcmp(opts.transformation, 'none'),
+      sz0 = size(imt);
+      % affine
+      fac = rand * .3 + 1;
+      shear = rand * 0.8 - 0.4;
+      aspect = rand * .5 - .25 + 1;
+      theta = randi(20)-10;
+      
+      if aspect > 1 ,
+          A = [fac, 0, 0; fac*shear*aspect, fac*aspect, 0; 0, 0, 1];
+      else
+          A = [fac/aspect, 0, 0; fac*shear, fac, 0; 0, 0, 1];
+      end
+      R = [cosd(theta), -sind(theta), 0; sind(theta), cosd(theta), 0; 0,0,1];
+      A = R*A;
+      T = affine2d(A);
+      imt = imwarp(imt, T);
+      w0 = size(imt,2);
+      h0 = size(imt,1);
+      if h0 > sz0(1) ,
+          imt = imt(ceil((h0-sz0(1))/2):sz0(1)+ceil((h0-sz0(1))/2)-1,...
+              ceil((w0-sz0(2))/2):sz0(2)+ceil((w0-sz0(2))/2)-1,:);
+      elseif h0 < sz0(1) ,
+          imt = zeros(sz0(1), sz0(2), 3);
+          imt(ceil((-h0+sz0(1))/2):h0+ceil((-h0+sz0(1))/2)-1,...
+              ceil((-w0+sz0(2))/2):w0+ceil((-w0+sz0(2))/2)-1,:) = imt;
+      end
+  end
+  
   % crop & flip
   w = size(imt,2) ;
   h = size(imt,1) ;

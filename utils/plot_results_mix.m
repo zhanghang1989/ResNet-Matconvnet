@@ -25,7 +25,7 @@ if isempty(strfind(savePath,'.pdf')) || strfind(savePath,'.pdf')~=numel(savePath
 end
 
 plots = opts.plots;
-figure(2) ; clf ;
+switchFigure(2) ; clf ;
 cmap = lines;
 
 
@@ -67,11 +67,22 @@ end
 
 drawnow ;
 print(savePath, '-dpdf') ;
-end
+
 
 function epoch = findLastCheckpoint(modelDir)
 list = dir(fullfile(modelDir, 'net-epoch-*.mat')) ;
 tokens = regexp({list.name}, 'net-epoch-([\d]+).mat', 'tokens') ;
 epoch = cellfun(@(x) sscanf(x{1}{1}, '%d'), tokens) ;
 epoch = max([epoch 0]) ;
+
+
+% -------------------------------------------------------------------------
+function switchFigure(n)
+% -------------------------------------------------------------------------
+if get(0,'CurrentFigure') ~= n
+  try
+    set(0,'CurrentFigure',n) ;
+  catch
+    figure(n) ;
+  end
 end
