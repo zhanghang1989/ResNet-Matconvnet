@@ -61,6 +61,7 @@ imdb.images.augData = augData;
 
 trainfn = @cnn_train_dag_check;
 
+rng('shuffle');
 [net, info] = trainfn(net, imdb, getBatch(opts), ...
   'expDir', opts.expDir, ...
   net.meta.trainOpts, ...
@@ -84,11 +85,11 @@ if imdb.images.set(batch(1))==1,  % training
   loc = [randi(sz0(1)-sz(1)+1) randi(sz0(2)-sz(2)+1)];
   images = imdb.images.augData(loc(1):loc(1)+sz(1)-1, ...
     loc(2):loc(2)+sz(2)-1, :, batch); 
+    if rand > 0.5, images=fliplr(images) ; end
 else                              % validating / testing
   images = imdb.images.data(:,:,:,batch); 
 end
 labels = imdb.images.labels(1,batch) ;
-if rand > 0.5, images=fliplr(images) ; end
 if opts.numGpus > 0
   images = gpuArray(images) ;
 end
