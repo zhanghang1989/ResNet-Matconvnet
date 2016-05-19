@@ -24,7 +24,6 @@ opts.bn = true;
 opts.whitenData = true;
 opts.contrastNormalization = true;
 opts.meanType = 'image'; % 'pixel' | 'image'
-opts.border = [4 4 4 4]; % tblr
 opts.gpus = []; 
 opts.checkpointFn = [];
 [opts, varargin] = vl_argparse(opts, varargin) ;
