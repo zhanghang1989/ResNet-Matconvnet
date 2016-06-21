@@ -61,6 +61,8 @@ If you have problem with compiling, please refer to the [link](http://zhanghang1
 	```
 
 ### Changes
+0. 06/21/2016:
+	- Support Pre-activation model described in [Identity Mappings in Deep Residual Networks, Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun](https://arxiv.org/abs/1603.05027)
 0. 05/17/2016: 
 	- Reproducing the experiments in Facebook [blog](http://torch.ch/blog/2016/02/04/resnets.html), removing ReLU layer at the end of each residual unit.
 0. 05/02/2016: 
