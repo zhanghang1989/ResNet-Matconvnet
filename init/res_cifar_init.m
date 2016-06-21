@@ -53,9 +53,8 @@ info.lastIdx = 0;
 
 % Three groups of layers
 info = add_group(opts.networkType, net, n, info, 3, 16, 1, opts);
-%opts.bottleneck, opts.batchNormalization, opts.reLUafterSum, opts.preActivation);
-info = add_group(opts.networkType, net, n, info, 3, 32, 2, opts);%.bottleneck, opts.batchNormalization, opts.reLUafterSum, opts.preActivation);
-info = add_group(opts.networkType, net, n, info, 3, 64, 2, opts);%.bottleneck, opts.batchNormalization, opts.reLUafterSum, opts.preActivation); 
+info = add_group(opts.networkType, net, n, info, 3, 32, 2, opts);
+info = add_group(opts.networkType, net, n, info, 3, 64, 2, opts); 
 
 % Prediction & loss layers
 block = dagnn.Pooling('poolSize', [8 8], 'method', 'avg', 'pad', 0, 'stride', 1);
@@ -84,7 +83,6 @@ net.initParams();
 
 % Add a group of layers containing 2n/3n conv layers
 function info = add_group(netType, net, n, info, w, ch, stride, opts)
-%bottleneck, bn, reLUafterSum, preActivation)
 if strcmpi(netType, 'plain'), 
   if isfield(info, 'lastName'), 
     lName = info.lastName; 
@@ -115,8 +113,6 @@ end
 
 % Add a smallest residual unit (2/3 conv layers)
 function info = add_block_res(net, info, f_size, stride, isFirst, opts)
-%bottleneck, bn, isFirst, reLUafterSum, preActivation)
-
 if isfield(info, 'lastName'), 
   lName0 = info.lastName;
   info = rmfield(info, 'lastName'); 
