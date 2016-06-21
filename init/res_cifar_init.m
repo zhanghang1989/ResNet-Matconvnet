@@ -57,13 +57,18 @@ info = add_group(opts.networkType, net, n, info, 3, 32, 2, opts);
 info = add_group(opts.networkType, net, n, info, 3, 64, 2, opts); 
 
 % Prediction & loss layers
-block = dagnn.Pooling('poolSize', [8 8], 'method', 'avg', 'pad', 0, 'stride', 1);
+
 if opts.preActivation ,
     add_layer_bn(net, 4*64, sprintf('sum%d',info.lastIdx), 'bn_final', 0.1); 
-    net.addLayer('pool_final', block, 'bn_final', 'pool_final');
+    block = dagnn.ReLU('leak',0);
+    net.addLayer('relu_final',  block, 'bn_final', 'relu_final');
+    block = dagnn.Pooling('poolSize', [8 8], 'method', 'avg', 'pad', 0, 'stride', 1);
+    net.addLayer('pool_final', block, 'relu_final', 'pool_final');
 elseif opts.reLUafterSum 
+    block = dagnn.Pooling('poolSize', [8 8], 'method', 'avg', 'pad', 0, 'stride', 1);
     net.addLayer('pool_final', block, sprintf('relu%d',info.lastIdx), 'pool_final');
 else
+    block = dagnn.Pooling('poolSize', [8 8], 'method', 'avg', 'pad', 0, 'stride', 1);
     net.addLayer('pool_final', block, sprintf('sum%d',info.lastIdx), 'pool_final');
 end
 
