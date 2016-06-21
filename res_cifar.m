@@ -33,7 +33,7 @@ end
 % -------------------------------------------------------------------------
 
 net = res_cifar_init(m, 'networkType', opts.modelType, ...
-  'batchNormalization', opts.bn, 'reLUafterSum', opts.reLUafterSum) ;
+  'reLUafterSum', opts.reLUafterSum) ;
 
 if exist(opts.imdbPath, 'file')
   imdb = load(opts.imdbPath) ;

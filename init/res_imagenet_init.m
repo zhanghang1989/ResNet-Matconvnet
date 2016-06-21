@@ -84,10 +84,6 @@ block = dagnn.Conv('size', [1 1 info.lastNumChannel nClasses], 'hasBias', true, 
 lName = sprintf('fc%d', info.lastIdx+1);
 net.addLayer(lName, block, 'pool_final', lName, {[lName '_f'], [lName '_b']});
 
-% if opts.batchNormalization,
-%   add_layer_bn(net, nClasses, lName, strrep(lName,'fc','bn'), 0.1); 
-%   lName = strrep(lName, 'fc', 'bn'); 
-% end
 
 net.addLayer('softmax', dagnn.SoftMax(), lName, 'softmax');  
 net.addLayer('loss', dagnn.Loss('loss', 'log'), {'softmax', 'label'}, 'loss');

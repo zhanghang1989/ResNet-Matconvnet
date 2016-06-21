@@ -1,6 +1,6 @@
 function run_cifar_experiments(Ns, MTs, varargin)
 % Usage example:  
-%  run_cifar_experiments([20 32 44 56 110], 'resnet', 'gpus', [1]);
+%  run_cifar_experiments([20 32 44 56 110 164 1001], 'resnet', 'gpus', [1]);
 % Options: 
 %   'expDir'['exp'], 'bn'[true], 'gpus'[[]], 'border'[[4 4 4 4]], 
 %   'meanType'['image'], 'whitenData'[true], 'contrastNormalization'[true]
