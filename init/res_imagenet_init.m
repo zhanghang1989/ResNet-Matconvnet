@@ -110,14 +110,12 @@ net.meta.augmentation.transformation = 'stretch' ;
 % Add a group of layers containing 2n/3n conv layers
 function info = add_group(netType, net, n, info, w, ch, stride, bottleneck, bn, reLUafterSum)
 if strcmpi(netType, 'plain'), 
-   % TODO: update 'plain', add bn
   if isfield(info, 'lastName'), 
     lName = info.lastName; 
     info = rmfield(info, 'lastName');
   else
     lName = sprintf('relu%d', info.lastIdx);
   end
-  % the 1st layer in the group may downsample the activations by half
   add_block_conv(net, sprintf('%d', info.lastIdx+1), lName, ...
     [w w info.lastNumChannel ch], stride, bn, true); 
   info.lastIdx = info.lastIdx + 1;
@@ -127,16 +125,15 @@ if strcmpi(netType, 'plain'),
       [w w ch ch], 1, bn, true);
     info.lastIdx = info.lastIdx + 1;
   end
-elseif strcmpi(netType, 'resnet'), 
-  info = add_block_res(net, info, [w w info.lastNumChannel ch], stride, bottleneck, bn, 1, reLUafterSum); 
-  for i=2:n, 
+elseif strcmpi(netType, 'resnet'),
+    info = add_block_res(net, info, [w w info.lastNumChannel ch], stride, bottleneck, bn, 1, reLUafterSum);
+    for i=2:n,
         if bottleneck,
             info = add_block_res(net, info, [w w 4*ch ch], 1, bottleneck, bn, 0, reLUafterSum);
         else
             info = add_block_res(net, info, [w w ch ch], 1, bottleneck, bn, 0, reLUafterSum);
         end
-      %info = add_block_res(net, info, [w w 4*ch ch], 1, bottleneck, bn, 0, reLUafterSum); 
-  end
+    end
 end
 
 
@@ -180,7 +177,7 @@ if bottleneck,
     [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, bn, true); 
   info.lastIdx = info.lastIdx + 1;
   add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
-    [1 1 info.lastNumChannel info.lastNumChannel*4], 1, bn, false); 
+    [1 1 info.lastNumChannel info.lastNumChannel*4], 1, bn, true); 
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = info.lastNumChannel*4; 
 else
@@ -188,7 +185,7 @@ else
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = f_size(4);
   add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
-    [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, bn, false); 
+    [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, bn, true); 
   info.lastIdx = info.lastIdx + 1; 
 end
 if bn, 

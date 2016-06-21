@@ -23,7 +23,7 @@ if isempty(strfind(savePath,'.pdf')) || strfind(savePath,'.pdf')~=numel(savePath
 end
 
 plots = opts.plots; 
-switchFigure(2) ; clf ;
+switchFigure(1) ; clf ;
 cmap = lines;
 for p = plots
   p = char(p) ;
@@ -53,7 +53,6 @@ for p = plots
     legend(Hs,leg{:},'Location','NorthEast') ;
 %    axis square; 
     ylim([0 opts.ub]);
-%    ylim([0 .75]);
     %xlim([0 nEpoches]);
     set(gca,'YGrid','on');
   end
