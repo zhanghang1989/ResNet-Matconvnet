@@ -10,16 +10,11 @@ switch m,
     otherwise, error('No configuration found for n=%d', n); 
 end
 
-opts.preActivation = true;
+
 opts.networkType = 'resnet'; % 'plain' | 'resnet'
 opts.reLUafterSum = false;
 opts.shortcutBN = false;
 opts = vl_argparse(opts, varargin); 
-
-if opts.preActivation ,
-    opts.reLUafterSum = false;
-    opts.shortcutBN = false;
-end
 
 nClasses = 10;
 net = dagnn.DagNN();
@@ -42,11 +37,11 @@ block = dagnn.Conv('size',  [3 3 3 16], 'hasBias', true, ...
                    'stride', 1, 'pad', [1 1 1 1]);
 lName = 'conv0';
 net.addLayer(lName, block, 'image', lName, {[lName '_f'], [lName '_b']});
-if ~opts.preActivation ,
-    add_layer_bn(net, 16, lName, 'bn0', 0.1); 
-    block = dagnn.ReLU('leak',0);
-    net.addLayer('relu0',  block, 'bn0', 'relu0');
-end
+
+add_layer_bn(net, 16, lName, 'bn0', 0.1);
+block = dagnn.ReLU('leak',0);
+net.addLayer('relu0',  block, 'bn0', 'relu0');
+
 
 info.lastNumChannel = 16;
 info.lastIdx = 0;
@@ -58,13 +53,7 @@ info = add_group(opts.networkType, net, n, info, 3, 64, 2, opts);
 
 % Prediction & loss layers
 
-if opts.preActivation ,
-    add_layer_bn(net, 4*64, sprintf('sum%d',info.lastIdx), 'bn_final', 0.1); 
-    block = dagnn.ReLU('leak',0);
-    net.addLayer('relu_final',  block, 'bn_final', 'relu_final');
-    block = dagnn.Pooling('poolSize', [8 8], 'method', 'avg', 'pad', 0, 'stride', 1);
-    net.addLayer('pool_final', block, 'relu_final', 'pool_final');
-elseif opts.reLUafterSum 
+if opts.reLUafterSum 
     block = dagnn.Pooling('poolSize', [8 8], 'method', 'avg', 'pad', 0, 'stride', 1);
     net.addLayer('pool_final', block, sprintf('relu%d',info.lastIdx), 'pool_final');
 else
@@ -121,8 +110,6 @@ function info = add_block_res(net, info, f_size, stride, isFirst, opts)
 if isfield(info, 'lastName'), 
   lName0 = info.lastName;
   info = rmfield(info, 'lastName'); 
-elseif opts.preActivation && info.lastIdx == 0,
-    lName0 = sprintf('conv0');
 elseif opts.reLUafterSum || info.lastIdx == 0
     lName0 = sprintf('relu%d',info.lastIdx);
 else
@@ -151,53 +138,33 @@ if stride > 1 || isFirst,
     end
 end
 
-if opts.bottleneck, 
-    if opts.preActivation ,
-        add_block_conv(net, sprintf('%d',info.lastIdx+1), lName01, [1 1 f_size(3) f_size(4)], stride, opts);
-        info.lastIdx = info.lastIdx + 1;
-        info.lastNumChannel = f_size(4);
-        add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('conv%d',info.lastIdx), ...
-            [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, opts);
-        info.lastIdx = info.lastIdx + 1;
-        add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('conv%d',info.lastIdx), ...
-            [1 1 info.lastNumChannel info.lastNumChannel*4], 1, opts);
-        info.lastIdx = info.lastIdx + 1;
-        info.lastNumChannel = info.lastNumChannel*4;
-    else
-        add_block_conv(net, sprintf('%d',info.lastIdx+1), lName01, [1 1 f_size(3) f_size(4)], stride, opts);
-        info.lastIdx = info.lastIdx + 1;
-        info.lastNumChannel = f_size(4);
-        add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
-            [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, opts);
-        info.lastIdx = info.lastIdx + 1;
-        add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
-            [1 1 info.lastNumChannel info.lastNumChannel*4], 1, opts);
-        info.lastIdx = info.lastIdx + 1;
-        info.lastNumChannel = info.lastNumChannel*4;
-    end
+if opts.bottleneck,
+    
+    add_block_conv(net, sprintf('%d',info.lastIdx+1), lName01, [1 1 f_size(3) f_size(4)], stride, opts);
+    info.lastIdx = info.lastIdx + 1;
+    info.lastNumChannel = f_size(4);
+    add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
+        [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, opts);
+    info.lastIdx = info.lastIdx + 1;
+    add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
+        [1 1 info.lastNumChannel info.lastNumChannel*4], 1, opts);
+    info.lastIdx = info.lastIdx + 1;
+    info.lastNumChannel = info.lastNumChannel*4;
+    
 else
-    if opts.preActivation ,
-        add_block_conv(net, sprintf('%d',info.lastIdx+1), lName01, f_size, stride, opts);
-        info.lastIdx = info.lastIdx + 1;
-        info.lastNumChannel = f_size(4);
-        add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('conv%d',info.lastIdx), ...
-            [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, opts);
-        info.lastIdx = info.lastIdx + 1;
-    else
-        add_block_conv(net, sprintf('%d',info.lastIdx+1), lName01, f_size, stride, opts);
-        info.lastIdx = info.lastIdx + 1;
-        info.lastNumChannel = f_size(4);
-        add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
-            [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, opts);
-        info.lastIdx = info.lastIdx + 1;
-    end
+    
+    add_block_conv(net, sprintf('%d',info.lastIdx+1), lName01, f_size, stride, opts);
+    info.lastIdx = info.lastIdx + 1;
+    info.lastNumChannel = f_size(4);
+    add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('relu%d',info.lastIdx), ...
+        [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1, opts);
+    info.lastIdx = info.lastIdx + 1;
+    
 end
 
-if opts.preActivation ,
-  lName1 = sprintf('conv%d', info.lastIdx);
-else
-  lName1 = sprintf('bn%d', info.lastIdx);
-end
+
+lName1 = sprintf('bn%d', info.lastIdx);
+
 
 net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
 sprintf('sum%d',info.lastIdx));
@@ -212,32 +179,20 @@ end
 
 % Add a conv layer (followed by optional batch normalization & relu)
 function net = add_block_conv(net, out_suffix, in_name, f_size, stride, opts)
-if opts.preActivation ,
-    lName = ['bn' out_suffix];
-    add_layer_bn(net, f_size(3), in_name, lName, 0.1);
-    
-    block = dagnn.ReLU('leak',0);
-    net.addLayer(['relu' out_suffix], block, lName, ['relu' out_suffix]);
-    
-    block = dagnn.Conv('size',f_size, 'hasBias',false, 'stride', stride, ...
-        'pad',[ceil(f_size(1)/2-0.5) floor(f_size(1)/2-0.5) ...
-        ]);
-    lName = ['conv' out_suffix];
-    net.addLayer(lName, block, ['relu' out_suffix], lName, {[lName '_f']});
-else
-    block = dagnn.Conv('size',f_size, 'hasBias',false, 'stride', stride, ...
-        'pad',[ceil(f_size(1)/2-0.5) floor(f_size(1)/2-0.5) ...
-        ]);
-    lName = ['conv' out_suffix];
-    net.addLayer(lName, block, in_name, lName, {[lName '_f']});
-    
-    
-    add_layer_bn(net, f_size(4), lName, strrep(lName,'conv','bn'), 0.1);
-    lName = strrep(lName, 'conv', 'bn');
-    
-    block = dagnn.ReLU('leak',0);
-    net.addLayer(['relu' out_suffix], block, lName, ['relu' out_suffix]);
-end
+
+block = dagnn.Conv('size',f_size, 'hasBias',false, 'stride', stride, ...
+    'pad',[ceil(f_size(1)/2-0.5) floor(f_size(1)/2-0.5) ...
+    ]);
+lName = ['conv' out_suffix];
+net.addLayer(lName, block, in_name, lName, {[lName '_f']});
+
+
+add_layer_bn(net, f_size(4), lName, strrep(lName,'conv','bn'), 0.1);
+lName = strrep(lName, 'conv', 'bn');
+
+block = dagnn.ReLU('leak',0);
+net.addLayer(['relu' out_suffix], block, lName, ['relu' out_suffix]);
+
 
 
 % Add a batch normalization layer
