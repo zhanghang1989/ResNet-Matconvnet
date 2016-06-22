@@ -2,19 +2,23 @@ function [net, info] = res_cifar(m, varargin)
 % res_cifar(20, 'modelType', 'resnet', 'reLUafterSum', false,...
 % 'expDir', 'data/exp/cifar-resNOrelu-20', 'gpus', [2])
 setup;
-opts.modelType = 'plain' ;
+opts.modelType = 'resnet' ;
 opts.preActivation = false;
 opts.reLUafterSum = false;
 opts.shortcutBN = false;
 [opts, varargin] = vl_argparse(opts, varargin) ;
 
+if opts.preActivation ,
 opts.expDir = fullfile('exp', ...
   sprintf('cifar-%s-%d', opts.modelType,m)) ;
+else
+     opts.expDir = fullfile('exp', ...
+  sprintf('cifar-resnet-Pre-%d',m)) ;
+end
 opts.dataDir = fullfile('data','cifar') ;
 [opts, varargin] = vl_argparse(opts, varargin) ;
 
 opts.imdbPath = fullfile(opts.dataDir, 'imdb.mat');
-opts.bn = true;
 opts.whitenData = true;
 opts.contrastNormalization = true;
 opts.meanType = 'image'; % 'pixel' | 'image'
@@ -32,8 +36,12 @@ end
 %                                                    Prepare model and data
 % -------------------------------------------------------------------------
 
-net = res_cifar_init(m, 'networkType', opts.modelType, ...
-  'reLUafterSum', opts.reLUafterSum) ;
+if opts.preActivation ,
+    net = res_cifar_preactivation_init(m) ;
+else
+    net = res_cifar_init(m, 'networkType', opts.modelType, ...
+      'reLUafterSum', opts.reLUafterSum) ;
+end
 
 if exist(opts.imdbPath, 'file')
   imdb = load(opts.imdbPath) ;
