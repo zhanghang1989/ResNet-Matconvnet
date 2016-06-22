@@ -3,7 +3,7 @@ function [net, info] = res_cifar(m, varargin)
 % 'expDir', 'data/exp/cifar-resNOrelu-20', 'gpus', [2])
 setup;
 opts.modelType = 'plain' ;
-opts.preActivation = true;
+opts.preActivation = false;
 opts.reLUafterSum = false;
 opts.shortcutBN = false;
 [opts, varargin] = vl_argparse(opts, varargin) ;
