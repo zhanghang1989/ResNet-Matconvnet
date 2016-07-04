@@ -28,7 +28,7 @@ end
 net.meta.trainOpts.learningRate = [0.01*ones(1,80) 0.001*ones(1,80) 0.0001*ones(1,40)] ;
 net.meta.trainOpts.numEpochs = numel(net.meta.trainOpts.learningRate) ;
 
-% First conv layer
+% First conv layer 
 block = dagnn.Conv('size',  [3 3 3 16], 'hasBias', true, ...
     'stride', 1, 'pad', [1 1 1 1]);
 lName = 'conv0';
@@ -101,8 +101,7 @@ if isFirst,
     block = dagnn.ReLU('leak',0);
     net.addLayer([lName0 '_relu'],  block, [lName0 '_bn'], [lName0 '_relu']);
     lName0 = [lName0 '_relu'];
-    lName01 = lName0;
-    
+
     % change featuremap size and chanels
     block = dagnn.Conv('size',[1 1 f_size(3) ch], 'hasBias', false,'stride',stride, ...
         'pad', 0);
@@ -115,18 +114,9 @@ if isFirst,
 end
 
 if opts.bottleneck,
-    if isFirst,
-        block = dagnn.Conv('size',[1 1 f_size(3) f_size(4)], 'hasBias',false, 'stride', stride, ...
-            'pad',[0 0]);
-        lName = sprintf('conv%d',info.lastIdx+1);
-        net.addLayer(lName, block, lName01, lName, {[lName '_f']});
-        info.lastIdx = info.lastIdx + 1;
-        info.lastNumChannel = f_size(4);
-    else
-        add_block_conv(net, sprintf('%d',info.lastIdx+1), lName01, [1 1 f_size(3) f_size(4)], stride);
-        info.lastIdx = info.lastIdx + 1;
-        info.lastNumChannel = f_size(4);
-    end
+    add_block_conv(net, sprintf('%d',info.lastIdx+1), lName01, [1 1 f_size(3) f_size(4)], stride);
+    info.lastIdx = info.lastIdx + 1;
+    info.lastNumChannel = f_size(4);
     add_block_conv(net, sprintf('%d',info.lastIdx+1), sprintf('conv%d',info.lastIdx), ...
         [f_size(1) f_size(2) info.lastNumChannel info.lastNumChannel], 1);
     info.lastIdx = info.lastIdx + 1;
