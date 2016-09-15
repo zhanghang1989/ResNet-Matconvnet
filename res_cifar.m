@@ -4,7 +4,7 @@ function [net, info] = res_cifar(m, varargin)
 setup;
 opts.modelType = 'resnet' ;
 opts.preActivation = false;
-opts.reLUafterSum = false;
+opts.reLUafterSum = true;
 opts.shortcutBN = false;
 [opts, varargin] = vl_argparse(opts, varargin) ;
 

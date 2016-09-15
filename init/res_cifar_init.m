@@ -12,7 +12,7 @@ end
 
 
 opts.networkType = 'resnet'; % 'plain' | 'resnet'
-opts.reLUafterSum = false;
+opts.reLUafterSum = true;
 opts.shortcutBN = false;
 opts = vl_argparse(opts, varargin); 
 
@@ -85,12 +85,12 @@ if strcmpi(netType, 'plain'),
     lName = sprintf('relu%d', info.lastIdx);
   end
   add_block_conv(net, sprintf('%d', info.lastIdx+1), lName, ...
-    [w w info.lastNumChannel ch], stride, bn, true); 
+    [w w info.lastNumChannel ch], stride, opts); 
   info.lastIdx = info.lastIdx + 1;
   info.lastNumChannel = ch;
   for i=2:2*n,
     add_block_conv(net, sprintf('%d', info.lastIdx+1), sprintf('relu%d', info.lastIdx), ...
-      [w w ch ch], 1, bn, true);
+      [w w ch ch], 1, opts);
     info.lastIdx = info.lastIdx + 1;
   end
 elseif strcmpi(netType, 'resnet'), 
