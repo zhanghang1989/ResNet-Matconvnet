@@ -172,8 +172,8 @@ sprintf('sum%d',info.lastIdx));
 % relu
 if opts.reLUafterSum
     block = dagnn.ReLU('leak', 0); 
-    net.addLayer(sprintf('relu%d', info.lastIdx), block, sprintf('sum%d', info.lastIdx), ...
-    sprintf('relu%d', info.lastIdx)); 
+    net.addLayer(sprintf('relu_%d', info.lastIdx), block, sprintf('sum%d', info.lastIdx), ...
+    sprintf('relu_%d', info.lastIdx)); 
 end
 
 
