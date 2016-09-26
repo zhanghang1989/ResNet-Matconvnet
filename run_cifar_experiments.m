@@ -10,6 +10,7 @@ setup;
 opts.expDir = fullfile('data', 'exp');
 opts.gpus = [1];
 opts.preActivation = false;
+opts.reLUafterSum = true;
 opts = vl_argparse(opts, varargin); 
 
 n_exp = numel(Ns); 
