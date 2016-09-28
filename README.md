@@ -12,7 +12,7 @@ This repository is a Matconvnet re-implementation of ["Deep Residual Learning fo
 
 The code relies on [vlfeat](http://www.vlfeat.org/), and [matconvnet](http://www.vlfeat.org/matconvnet/), which should be downloaded and built before running the experiments. You can use the following commend to download them.
 ```sh
-git clone --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvnet.git
+git clone -b v1.0 --recurse-submodules https://github.com/zhanghang1989/ResNet-Matconvnet.git
 ```
 If you have problem with compiling, please refer to the [link](http://zhanghang1989.github.io/ResNet/#compiling-vlfeat-and-matconvnet).	
 ### Train from Scratch
