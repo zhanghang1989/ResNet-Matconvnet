@@ -31,10 +31,10 @@ Epochs = 40, GPU Tests
 ![Plain nets](https://github.com/wajihullahbaig/ResNet-Matconvnet/blob/master/figure/plain.jpg)
 
 ### Resnet 
-![Residual nets](https://github.com/wajihullahbaig/ResMet-Matconvnet/blob/master/figure/resnet.jpg)
+![Residual nets](https://github.com/wajihullahbaig/ResNet-Matconvnet/blob/master/figure/resnet.jpg)
 
 ### Resnet-No-reLU 
-![Residual-No-ReLU nets](https://github.com/wajihullahbaig/ResMet-Matconvnet/blob/master/figure/resnet-No-reLU.jpg)
+![Residual-No-ReLU nets](https://github.com/wajihullahbaig/ResNet-Matconvnet/blob/master/figure/resnet-No-reLU.jpg)
 
 ## Platform/Dev Environmets/Dependencies etc
 
