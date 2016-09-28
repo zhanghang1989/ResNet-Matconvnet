@@ -28,13 +28,13 @@ Epochs = 40, GPU Tests
 | Residual-No-reLU 32  | 0.0042       | 0.0170     | 
 		         
 ### Plain
-![Plain nets](https://github.com/wajihullahbaig/RestMet-Matconvnet/blob/master/figure/plain.jpg)
+![Plain nets](https://github.com/wajihullahbaig/ResMet-Matconvnet/blob/master/figure/plain.jpg)
 
 ### Resnet 
-![Residual nets](https://github.com/wajihullahbaig/RestMet-Matconvnet/blob/master/figure/resnet.jpg)
+![Residual nets](https://github.com/wajihullahbaig/ResMet-Matconvnet/blob/master/figure/resnet.jpg)
 
 ### Resnet-No-reLU 
-![Residual-No-ReLU nets](https://github.com/wajihullahbaig/RestMet-Matconvnet/blob/master/figure/resnet-No-reLU.jpg)
+![Residual-No-ReLU nets](https://github.com/wajihullahbaig/ResMet-Matconvnet/blob/master/figure/resnet-No-reLU.jpg)
 
 ## Platform/Dev Environmets/Dependencies etc
 
