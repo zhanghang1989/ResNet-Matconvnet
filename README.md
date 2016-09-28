@@ -28,7 +28,7 @@ Epochs = 40, GPU Tests
 | Residual-No-reLU 32  | 0.0042       | 0.0170     | 
 		         
 ### Plain
-![Plain nets](https://github.com/wajihullahbaig/ResMet-Matconvnet/blob/master/figure/plain.jpg)
+![Plain nets](https://github.com/wajihullahbaig/ResNet-Matconvnet/blob/master/figure/plain.jpg)
 
 ### Resnet 
 ![Residual nets](https://github.com/wajihullahbaig/ResMet-Matconvnet/blob/master/figure/resnet.jpg)
