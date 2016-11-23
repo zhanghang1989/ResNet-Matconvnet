@@ -190,7 +190,7 @@ else
   lName1 = sprintf('conv%d', info.lastIdx);
 end
 
-
+info.lastIdx = info.lastIdx + 1;
 net.addLayer(sprintf('sum%d',info.lastIdx), dagnn.Sum(), {lName0,lName1}, ...
 sprintf('sum%d',info.lastIdx));
 
