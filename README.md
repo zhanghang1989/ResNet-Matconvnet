@@ -1,5 +1,7 @@
 # ResNet-Matconvnet
 
+:x: **I have stopped maintaining this repo. For fine-tuning ResNet, I would suggest using Torch version from Facebook [repo](https://github.com/facebook/fb.resnet.torch).**
+
 This repository is a Matconvnet re-implementation of ["Deep Residual Learning for Image Recognition",Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun](http://arxiv.org/abs/1512.03385). You can train Deep Residual Network on ImageNet from Scratch or fine-tune pre-trained model on your own dataset. This repo is created by [Hang Zhang](http://www.hangzh.com).
 
 ### Table of Contents
